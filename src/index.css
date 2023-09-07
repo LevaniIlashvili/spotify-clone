@@ -1,0 +1,26 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 62.5%;
+  width: 100vw;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.page {
+  min-height: calc(100vh);
+}
+
+.animated-btn:hover {
+  transform: scale(1.05);
+}
+
+.animated-btn:active {
+  transform: scale(1);
+}
