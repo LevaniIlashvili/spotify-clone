@@ -323,12 +323,11 @@ const Wrapper = styled.section`
   position: absolute;
   top: calc(100vh - 8rem);
   padding: 1rem;
-  display: flex;
-  /* gap: 5rem; */
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
 
   .track-info {
-    /* flex-shrink: 1; */
+    min-width: 23rem;
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -336,13 +335,16 @@ const Wrapper = styled.section`
 
   img {
     border-radius: 4px;
-    width: 56px;
+    width: 5.6rem;
   }
 
   .info {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
   }
 
   a:link,
@@ -356,10 +358,38 @@ const Wrapper = styled.section`
   }
 
   .name {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 500;
     color: #fff;
+    position: relative;
   }
+
+  /* .name:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: red;
+    top: 0;
+    right: 0;
+    background: linear-gradient(to right, transparent 12.5em, #000000be);
+    z-index: 1;
+  } */
+
+  /* .name {
+    position: relative;
+    animation: marquee 10s linear infinite alternate; 
+  }
+
+  @keyframes name {
+    0%,
+    100% {
+      transform: translateX(100%);
+    }
+    50% {
+      transform: translateX(-100%);
+    }
+  } */
 
   .artist {
     font-size: 1.1rem;
@@ -388,6 +418,7 @@ const Wrapper = styled.section`
 
   .heart-icon {
     font-size: 1.8rem;
+    min-width: 1.8rem;
     cursor: pointer;
   }
 
@@ -397,7 +428,6 @@ const Wrapper = styled.section`
   }
 
   .player {
-    /* flex-shrink: 2; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -438,6 +468,7 @@ const Wrapper = styled.section`
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    width: 100%;
   }
 
   .progress-bar-container {
@@ -451,7 +482,9 @@ const Wrapper = styled.section`
 
   .progress-bar {
     background-color: hsla(0, 0%, 100%, 0.3);
-    width: 45rem;
+    width: 100%;
+    min-width: 20rem;
+    flex-shrink: 1;
     height: 0.4rem;
     border-radius: 5px;
     position: relative;
@@ -459,13 +492,14 @@ const Wrapper = styled.section`
   }
 
   .bar {
-    width: 45rem;
+    width: 100%;
+    min-width: 20rem;
     height: 0.45rem;
     border-radius: 5px;
     background-color: #fff;
     position: absolute;
     top: 0;
-    right: 45rem;
+    right: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -501,7 +535,6 @@ const Wrapper = styled.section`
   }
 
   .right-div {
-    /* flex-shrink: 1; */
     display: flex;
     align-items: center;
     justify-content: flex-end;
