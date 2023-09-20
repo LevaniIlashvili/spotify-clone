@@ -7,7 +7,18 @@ import { useGlobalContext } from "./context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const { setAccessToken, accessToken, setUser, user } = useGlobalContext();
+  const {
+    setAccessToken,
+    accessToken,
+    setUser,
+    user,
+    setUserPlaylists,
+    userPlaylists,
+    setUserLikedSongs,
+    userLikedSongs,
+    setCurrentTrack,
+    currentTrack,
+  } = useGlobalContext();
 
   useEffect(() => {
     if (!window.location.hash) return;
@@ -19,6 +30,9 @@ function App() {
   useEffect(() => {
     if (!accessToken) return;
     setUser();
+    setUserPlaylists();
+    setUserLikedSongs();
+    setCurrentTrack();
   }, [accessToken]);
 
   if (!user) {

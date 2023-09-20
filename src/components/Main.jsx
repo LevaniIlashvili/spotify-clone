@@ -1,9 +1,11 @@
 import React from "react";
+import MusicPlayer from "./MusicPlayer";
+import styled from "styled-components";
 
 function Main() {
   return (
     <div>
-      <h1>main</h1>
+      <MusicPlayer />
     </div>
   );
 }
