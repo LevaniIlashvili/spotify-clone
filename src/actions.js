@@ -3,3 +3,5 @@ export const SET_USER = "SET_USER";
 export const SET_USER_PLAYLISTS = "SET_USER_PLAYLISTS";
 export const SET_USER_LIKED_SONGS = "SET_USER_LIKED_SONGS";
 export const SET_CURRENT_TRACK = "SET_USER_CURRENT_TRACK";
+export const SET_VOLUME = "SET_VOLUME";
+export const SET_IS_MUTED = "SET_IS_MUTED";

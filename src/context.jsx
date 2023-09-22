@@ -7,12 +7,16 @@ import {
   SET_USER_PLAYLISTS,
   SET_USER_LIKED_SONGS,
   SET_CURRENT_TRACK,
+  SET_VOLUME,
+  SET_IS_MUTED,
 } from "./actions";
 
 const initialState = {
   accessToken: "",
   user: null,
   currentTrack: "",
+  volume: 100,
+  isMuted: false,
   userPlaylists: [],
   userLikedSongs: [],
 };
@@ -78,6 +82,14 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const setVolume = (volume) => {
+    dispatch({ type: SET_VOLUME, payload: volume });
+  };
+
+  const setIsMuted = (boolean) => {
+    dispatch({ type: SET_IS_MUTED, payload: boolean });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -87,6 +99,8 @@ const AppProvider = ({ children }) => {
         setUserPlaylists,
         setUserLikedSongs,
         setCurrentTrack,
+        setVolume,
+        setIsMuted,
       }}
     >
       {children}

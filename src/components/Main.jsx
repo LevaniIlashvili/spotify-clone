@@ -1,5 +1,5 @@
 import React from "react";
-import MusicPlayer from "./MusicPlayer";
+import MusicPlayer from "./musicPlayer/MusicPlayer";
 import styled from "styled-components";
 
 function Main() {
