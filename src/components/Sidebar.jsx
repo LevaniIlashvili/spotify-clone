@@ -197,6 +197,8 @@ const Wrapper = styled.section`
   flex-direction: column;
   padding: 2.5rem 0 0 2.5rem;
   overflow: normal;
+  grid-column: 1 /2;
+  grid-row: 1/ 3;
 
   a {
     text-decoration: none;

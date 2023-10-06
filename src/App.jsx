@@ -6,7 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
-import Playlist from "./components/Playlist";
+import PlaylistPage from "./components/PlaylistPage";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   const {
@@ -48,10 +49,11 @@ const App = () => {
       style={{ gridTemplateColumns: isSidebarOpen ? "3fr 7fr" : "8rem 1fr" }}
     >
       <Router>
+        <Navbar />
         <Sidebar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/playlist/:id" element={<Playlist />} />
+          <Route path="/playlist/:id" element={<PlaylistPage />} />
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>
         <MusicPlayer />
@@ -62,6 +64,7 @@ const App = () => {
 
 const Wrapper = styled.section`
   display: grid;
+  grid-template-rows: 6.4rem 1fr;
 `;
 
 export default App;

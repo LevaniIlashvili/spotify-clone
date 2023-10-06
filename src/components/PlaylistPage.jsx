@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
@@ -8,10 +8,11 @@ import Track from "./Track";
 import { LuClock3 } from "react-icons/lu";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import LoadingScreen from "./LoadingScreen";
+import Navbar from "./Navbar";
 
 // let PLAYLIST_NAME_FONT_SIZE = 10;
 
-const Playlist = () => {
+const PlaylistPage = () => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [currentPlaylistTracks, setCurrentPlaylistTracks] = useState(null);
   const { id } = useParams();
@@ -79,23 +80,6 @@ const Playlist = () => {
     <Wrapper>
       <div className="main">
         <div className="theme">
-          <div className="top">
-            <div className="top-right-side">
-              <button className="btn animated-btn explore-premium-btn">
-                Explore Premium
-              </button>
-              <button className="btn animated-btn install-app-btn">
-                Install App
-              </button>
-              <div className="user-img-container">
-                <img
-                  src={user.images[0].url}
-                  alt="user image"
-                  className="user-img"
-                />
-              </div>
-            </div>
-          </div>
           <div className="playlist-info">
             <img
               src={
@@ -176,8 +160,9 @@ const Playlist = () => {
 
 const Wrapper = styled.section`
   background-color: var(--black);
-  height: calc(100vh - 5.5rem);
+  height: calc(100vh - 11rem);
   padding: 0.8rem;
+  /* grid-template-rows: 2 / -1; */
 
   .main {
     width: 100%;
@@ -213,59 +198,14 @@ const Wrapper = styled.section`
   .theme {
     background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%), #686767;
     width: 100%;
-    height: 34rem;
+    height: 30rem;
     border-radius: 8px 8px 0 0;
     padding: 1.5rem 2rem;
   }
 
-  .top {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 4rem;
-  }
-
-  .top-right-side {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .explore-premium-btn,
-  .install-app-btn {
-    font-size: 1.4rem;
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    border-radius: 2rem;
-  }
-
-  .explore-premium-btn {
-    color: var(--black);
-    background-color: var(--white);
-  }
-
-  .install-app-btn {
-    color: var(--white);
-    background-color: var(--black);
-  }
-
-  .user-img-container {
-    background-color: #0000008f;
-    border-radius: 50%;
-    height: 3.2rem;
-    width: 3.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .user-img {
-    border-radius: 50%;
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-
   .playlist-info {
     display: flex;
-    height: 75%;
+    height: 100%;
     align-items: flex-end;
     gap: 2rem;
     color: #ffffff;
@@ -314,6 +254,12 @@ const Wrapper = styled.section`
 
   .user-name-and-songs-count {
     font-weight: 600;
+  }
+
+  .user-img {
+    border-radius: 50%;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   .playlist-duration {
@@ -417,4 +363,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default Playlist;
+export default PlaylistPage;

@@ -28,7 +28,6 @@ body {
 
 .btn {
   color: var(--gray);
-  cursor: pointer;
   border: none;
 }
 
