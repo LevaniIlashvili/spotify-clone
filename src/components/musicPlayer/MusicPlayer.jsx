@@ -30,20 +30,8 @@ const Wrapper = styled.section`
     gap: 1.5rem;
   }
 
-  .btn {
-    color: #b3b3b3;
-  }
-
-  .btn:hover {
-    color: #fff;
-  }
-
-  .btn:active {
-    color: #b3b3b3;
-  }
-
   .active {
-    color: #1ed760 !important;
+    color: var(--green) !important;
   }
 
   .active:hover {

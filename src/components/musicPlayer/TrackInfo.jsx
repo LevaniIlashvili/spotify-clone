@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
 import { useGlobalContext } from "../../context";
-import { FiHeart } from "react-icons/fi";
-import axios from "axios";
 import styled from "styled-components";
+import TrackHeart from "../TrackHeart";
 
 function TrackInfo() {
-  const { currentTrack, userLikedSongs, accessToken } = useGlobalContext();
-  const [isTrackLiked, setIsTrackLiked] = useState(false);
+  const { currentTrack } = useGlobalContext();
   const { album, artists, name, external_urls } = currentTrack || {};
   const { images } = album || {};
 
@@ -15,33 +12,7 @@ function TrackInfo() {
 
   const image = images?.[2]?.url;
 
-  const likedSongsUris = userLikedSongs?.items?.map(
-    (likedSong) => likedSong.track.uri
-  );
-
-  useEffect(() => {
-    if (likedSongsUris?.includes(currentTrack.uri)) {
-      setIsTrackLiked(true);
-    }
-  }, [userLikedSongs]);
-
-  const toggleTrackLiked = async () => {
-    setIsTrackLiked(!isTrackLiked);
-    try {
-      const response = await axios({
-        method: isTrackLiked ? "delete" : "put",
-        url: `https://api.spotify.com/v1/me/tracks?ids=${currentTrack.id}`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        data: { ids: [currentTrack.id] },
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // console.log(currentTrack);
 
   return (
     <Wrapper className="track-info">
@@ -56,10 +27,7 @@ function TrackInfo() {
           )}
         </a>
       </div>
-      <FiHeart
-        onClick={toggleTrackLiked}
-        className={`btn heart-icon ${isTrackLiked && "filled"}`}
-      />
+      {currentTrack && <TrackHeart track={currentTrack} />}
     </Wrapper>
   );
 }
@@ -86,13 +54,13 @@ const Wrapper = styled.section`
 
   a:hover {
     text-decoration: underline;
-    color: #fff;
+    color: var(--white);
   }
 
   .name {
     font-size: 1.25rem;
     font-weight: 500;
-    color: #fff;
+    color: var(--white);
     position: relative;
   }
 
@@ -125,18 +93,7 @@ const Wrapper = styled.section`
 
   .artist {
     font-size: 1.1rem;
-    color: #b3b3b3;
-  }
-
-  .heart-icon {
-    font-size: 1.8rem;
-    min-width: 1.8rem;
-    cursor: pointer;
-  }
-
-  .heart-icon.filled {
-    color: #1ed760;
-    fill: #1ed760;
+    color: var(--gray);
   }
 `;
 

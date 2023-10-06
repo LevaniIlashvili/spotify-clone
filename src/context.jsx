@@ -6,19 +6,30 @@ import {
   SET_USER,
   SET_USER_PLAYLISTS,
   SET_USER_LIKED_SONGS,
+  SET_PLAYLIST_SORT_TYPE,
+  SET_PLAYLIST_FILTER_TEXT,
   SET_CURRENT_TRACK,
+  SET_IS_TRACK_PLAYING,
+  SET_PLAYLIST_BEING_PLAYED,
   SET_VOLUME,
   SET_IS_MUTED,
+  SET_IS_SIDEBAR_OPEN,
 } from "./actions";
 
 const initialState = {
   accessToken: "",
   user: null,
   currentTrack: "",
+  isTrackPlaying: false,
+  playlistBeingPlayed: {},
   volume: 100,
   isMuted: false,
   userPlaylists: [],
   userLikedSongs: [],
+  playlistSortType: "Recently Added",
+  playlistFilterText: "",
+  filteredPlaylists: [],
+  isSidebarOpen: true,
 };
 
 const AppContext = createContext();
@@ -69,17 +80,24 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const setPlaylistSortType = (sortType) => {
+    dispatch({ type: SET_PLAYLIST_SORT_TYPE, payload: sortType });
+  };
+
+  const setPlaylistFilterText = (text) => {
+    dispatch({ type: SET_PLAYLIST_FILTER_TEXT, payload: text });
+  };
+
   const setCurrentTrack = async (track) => {
-    try {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/tracks/4OROzZUy6gOWN4UGQVaZMF?si=74b6d887328e4b0f&nd=1",
-        { headers }
-      );
-      console.log(response.data);
-      dispatch({ type: SET_CURRENT_TRACK, payload: response.data });
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch({ type: SET_CURRENT_TRACK, payload: track });
+  };
+
+  const setIsTrackPlaying = (boolean) => {
+    dispatch({ type: SET_IS_TRACK_PLAYING, payload: boolean });
+  };
+
+  const setPlaylistBeingPlayed = (playlist) => {
+    dispatch({ type: SET_PLAYLIST_BEING_PLAYED, payload: playlist });
   };
 
   const setVolume = (volume) => {
@@ -90,6 +108,30 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_IS_MUTED, payload: boolean });
   };
 
+  const setIsSidebarOpen = (boolean) => {
+    dispatch({ type: SET_IS_SIDEBAR_OPEN, payload: boolean });
+  };
+
+  // for search page
+  const getCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.spotify.com/v1/browse/categories/pop/playlists",
+        { headers }
+      );
+      // const response2 = await axios.get(
+      //   `${response.data.categories.items[1].href}`,
+      //   { headers }
+      // );
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // for search page
+  // getCategories();
+
   return (
     <AppContext.Provider
       value={{
@@ -98,9 +140,14 @@ const AppProvider = ({ children }) => {
         setUser,
         setUserPlaylists,
         setUserLikedSongs,
+        setPlaylistSortType,
+        setPlaylistFilterText,
         setCurrentTrack,
+        setIsTrackPlaying,
+        setPlaylistBeingPlayed,
         setVolume,
         setIsMuted,
+        setIsSidebarOpen,
       }}
     >
       {children}

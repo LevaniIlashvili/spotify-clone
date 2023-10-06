@@ -1,3 +1,11 @@
+:root {
+  --green: #1db954;
+  --white: #ffffff;
+  --gray: #b3b3b3;
+  --dark-gray: #a7a7a7;
+  --black: #000;
+}
+
 *,
 *::after,
 *::before {
@@ -14,12 +22,22 @@ body {
   font-size: 1.6rem;
   width: 100vw;
   height: 100vh;
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #6b6b6b;
 }
 
-.page {
-  min-height: calc(100vh);
+.btn {
+  color: var(--gray);
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  color: var(--white);
+}
+
+.btn:active {
+  color: var(--gray);
 }
 
 .animated-btn:hover {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 function Login() {
   return (
-    <Wrapper className="page">
+    <Wrapper>
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" />
       <a className="animated-btn" href={loginUrl}>
         login with spotify
@@ -13,6 +13,7 @@ function Login() {
 }
 
 const Wrapper = styled.section`
+  min-height: calc(100vh);
   background-color: #000;
   color: #fff;
   font-size: 1.6rem;
