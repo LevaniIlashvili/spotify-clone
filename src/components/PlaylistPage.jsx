@@ -8,7 +8,7 @@ import Track from "./Track";
 import { LuClock3 } from "react-icons/lu";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import LoadingScreen from "./LoadingScreen";
-import Navbar from "./Navbar";
+import Hero from "./Hero";
 
 // let PLAYLIST_NAME_FONT_SIZE = 10;
 
@@ -18,7 +18,6 @@ const PlaylistPage = () => {
   const { id } = useParams();
   const {
     accessToken,
-    user,
     playlistBeingPlayed,
     setPlaylistBeingPlayed,
     setCurrentTrack,
@@ -79,38 +78,25 @@ const PlaylistPage = () => {
   return (
     <Wrapper>
       <div className="main">
-        <div className="theme">
-          <div className="playlist-info">
-            <img
-              src={
-                currentPlaylist.images[
-                  currentPlaylist.images.length === 1 ? 0 : 1
-                ]?.url
-              }
-              className="playlist-img"
-            />
-            <div className="playlist-info-text">
-              <p className="type">{currentPlaylist.type}</p>
-              <h1 className="playlist-name">{currentPlaylist.name}</h1>
-              <div>
-                <img
-                  src={user.images[0].url}
-                  alt="user image"
-                  className="user-img"
-                />
-                <p className="user-name-and-tracks">{`${user.display_name} • ${currentPlaylistTracks.length} songs,`}</p>
-                <p className="playlist-duration">
-                  {formatTimeMixed(
-                    currentPlaylistTracks.reduce((acc, item) => {
-                      if (item.track === null) return acc;
-                      return acc + item.track?.duration_ms;
-                    }, 0) / 1000
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Hero
+          img={
+            currentPlaylist.images[currentPlaylist.images.length === 1 ? 0 : 1]
+              ?.url
+          }
+          type={currentPlaylist.type}
+          name={currentPlaylist.name}
+          userName={currentPlaylist.owner.display_name}
+        >
+          <p>{` • ${currentPlaylistTracks.length} songs,`}</p>
+          <p className="playlist-duration">
+            {formatTimeMixed(
+              currentPlaylistTracks.reduce((acc, item) => {
+                if (item.track === null) return acc;
+                return acc + item.track?.duration_ms;
+              }, 0) / 1000
+            )}
+          </p>
+        </Hero>
         <div className="playlist-options-container">
           <button
             type="button"
@@ -195,77 +181,6 @@ const Wrapper = styled.section`
     background: hsla(0, 0%, 100%, 0.7);
   }
 
-  .theme {
-    background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%), #686767;
-    width: 100%;
-    height: 30rem;
-    border-radius: 8px 8px 0 0;
-    padding: 1.5rem 2rem;
-  }
-
-  .playlist-info {
-    display: flex;
-    height: 100%;
-    align-items: flex-end;
-    gap: 2rem;
-    color: #ffffff;
-  }
-
-  .playlist-img {
-    width: 23.2rem;
-    height: 23.2rem;
-    box-shadow: #292929 1rem 1rem 6rem;
-  }
-
-  .playlist-info-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .type {
-    font-size: 1.35rem;
-  }
-
-  .playlist-name {
-    font-size: 6rem;
-    margin-bottom: 2rem;
-  }
-
-  /*
-  @media screen and (max-width: 1150px) {
-    .playlist-name {
-      font-size: 7rem;
-    }
-  }
-  
-  @media screen and (max-width: 1000px) {
-    .playlist-name {
-      font-size: 4rem;
-    }
-  } */
-
-  .playlist-info-text div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.4rem;
-  }
-
-  .user-name-and-songs-count {
-    font-weight: 600;
-  }
-
-  .user-img {
-    border-radius: 50%;
-    width: 2.4rem;
-    height: 2.4rem;
-  }
-
-  .playlist-duration {
-    color: var(--gray);
-  }
-
   .playlist-options-container {
     display: flex;
     align-items: center;
@@ -292,15 +207,12 @@ const Wrapper = styled.section`
     font-size: 2.8rem;
   }
 
-  /* .heart-icon {} */
-
   .tracks {
     width: 100%;
     background: linear-gradient(transparent 0, black 20%), #313131;
     padding: 1.5rem 2rem;
     display: flex;
     flex-direction: column;
-    /* gap: 1.5rem; */
   }
 
   .tracks-top {
