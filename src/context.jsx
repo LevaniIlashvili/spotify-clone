@@ -10,10 +10,11 @@ import {
   SET_PLAYLIST_FILTER_TEXT,
   SET_CURRENT_TRACK,
   SET_IS_TRACK_PLAYING,
-  SET_PLAYLIST_BEING_PLAYED,
+  SET_QUEUE,
   SET_VOLUME,
   SET_IS_MUTED,
   SET_IS_SIDEBAR_OPEN,
+  SET_NAVBAR_CONTENT,
 } from "./actions";
 
 const initialState = {
@@ -21,7 +22,7 @@ const initialState = {
   user: null,
   currentTrack: "",
   isTrackPlaying: false,
-  playlistBeingPlayed: {},
+  queue: [],
   volume: 100,
   isMuted: false,
   userPlaylists: [],
@@ -30,6 +31,7 @@ const initialState = {
   playlistFilterText: "",
   filteredPlaylists: [],
   isSidebarOpen: true,
+  navbarContent: "",
 };
 
 const AppContext = createContext();
@@ -96,8 +98,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_IS_TRACK_PLAYING, payload: boolean });
   };
 
-  const setPlaylistBeingPlayed = (playlist) => {
-    dispatch({ type: SET_PLAYLIST_BEING_PLAYED, payload: playlist });
+  const setQueue = (queue) => {
+    dispatch({ type: SET_QUEUE, payload: queue });
   };
 
   const setVolume = (volume) => {
@@ -110,6 +112,10 @@ const AppProvider = ({ children }) => {
 
   const setIsSidebarOpen = (boolean) => {
     dispatch({ type: SET_IS_SIDEBAR_OPEN, payload: boolean });
+  };
+
+  const setNavbarContent = (content) => {
+    dispatch({ type: SET_NAVBAR_CONTENT, payload: content });
   };
 
   // for search page
@@ -144,10 +150,11 @@ const AppProvider = ({ children }) => {
         setPlaylistFilterText,
         setCurrentTrack,
         setIsTrackPlaying,
-        setPlaylistBeingPlayed,
+        setQueue,
         setVolume,
         setIsMuted,
         setIsSidebarOpen,
+        setNavbarContent,
       }}
     >
       {children}

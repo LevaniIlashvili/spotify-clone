@@ -8,6 +8,7 @@ import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
 import PlaylistPage from "./components/PlaylistPage";
 import Navbar from "./components/Navbar";
+import TrackPage from "./components/TrackPage";
 
 const App = () => {
   const {
@@ -19,6 +20,7 @@ const App = () => {
     setUserLikedSongs,
     setCurrentTrack,
     isSidebarOpen,
+    setNavbarContent,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -35,6 +37,21 @@ const App = () => {
     setUserLikedSongs();
     setCurrentTrack();
   }, [accessToken]);
+
+  const handleNavbarScroll = (playBtnRef, content) => {
+    const playBtn = playBtnRef.current;
+    const navbar = document.querySelector("nav");
+    if (playBtn && navbar) {
+      const playBtnPosition = playBtn.getBoundingClientRect();
+      const navbarPosition = navbar.getBoundingClientRect();
+
+      if (navbarPosition.bottom >= playBtnPosition.top) {
+        setNavbarContent(content);
+      } else {
+        setNavbarContent("");
+      }
+    }
+  };
 
   if (!user) {
     return (
@@ -53,7 +70,14 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/playlist/:id" element={<PlaylistPage />} />
+          <Route
+            path="/playlist/:id"
+            element={<PlaylistPage handleNavbarScroll={handleNavbarScroll} />}
+          />
+          <Route
+            path="/track/:id"
+            element={<TrackPage handleNavbarScroll={handleNavbarScroll} />}
+          />
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>
         <MusicPlayer />

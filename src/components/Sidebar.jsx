@@ -18,6 +18,7 @@ const Sidebar = () => {
     setPlaylistFilterText,
     isSidebarOpen,
     setIsSidebarOpen,
+    currentTrack,
   } = useGlobalContext();
 
   const handleClickOutside = (e) => {
@@ -134,7 +135,16 @@ const Sidebar = () => {
                   </div>
                 )}
                 <div>
-                  <p className="name">{playlist.name}</p>
+                  <p
+                    className={`name ${
+                      currentTrack.playingFrom.type === "playlist" &&
+                      currentTrack.playingFrom.id === playlist.id
+                        ? "currently-playing"
+                        : ""
+                    }`}
+                  >
+                    {playlist.name}
+                  </p>
                   <p className="type-owner">
                     {playlist.type.charAt(0).toUpperCase() +
                       playlist.type.slice(1)}{" "}
@@ -199,6 +209,10 @@ const Wrapper = styled.section`
   overflow: normal;
   grid-column: 1 /2;
   grid-row: 1/ 3;
+
+  .currently-playing {
+    color: var(--green);
+  }
 
   a {
     text-decoration: none;

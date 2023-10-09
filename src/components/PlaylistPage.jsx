@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
@@ -12,17 +12,18 @@ import Hero from "./Hero";
 
 // let PLAYLIST_NAME_FONT_SIZE = 10;
 
-const PlaylistPage = () => {
+const PlaylistPage = ({ handleNavbarScroll }) => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [currentPlaylistTracks, setCurrentPlaylistTracks] = useState(null);
   const { id } = useParams();
+  const playBtnRef = useRef(null);
   const {
     accessToken,
-    playlistBeingPlayed,
-    setPlaylistBeingPlayed,
     setCurrentTrack,
+    currentTrack,
     isTrackPlaying,
     setIsTrackPlaying,
+    setQueue,
   } = useGlobalContext();
 
   // if (currentPlaylist?.name?.length > 13) {
@@ -67,17 +68,16 @@ const PlaylistPage = () => {
     getPlaylistTracks();
   }, [id]);
 
-  // console.log(currentPlaylist);
-
   if (!currentPlaylist || !currentPlaylistTracks) {
     return <LoadingScreen></LoadingScreen>;
   }
 
-  let index = 0;
-
   return (
     <Wrapper>
-      <div className="main">
+      <div
+        className="main"
+        onScroll={() => handleNavbarScroll(playBtnRef, currentPlaylist.name)}
+      >
         <Hero
           img={
             currentPlaylist.images[currentPlaylist.images.length === 1 ? 0 : 1]
@@ -99,17 +99,26 @@ const PlaylistPage = () => {
         </Hero>
         <div className="playlist-options-container">
           <button
+            ref={playBtnRef}
             type="button"
             className="start-playlist animated-btn"
             onClick={() => {
-              setIsTrackPlaying(!isTrackPlaying);
-              if (currentPlaylist.id !== playlistBeingPlayed.id) {
-                setCurrentTrack(currentPlaylist.tracks.items[0].track);
-                setPlaylistBeingPlayed(currentPlaylist);
+              if (currentTrack?.playingFrom?.id !== currentPlaylist.id) {
+                setQueue(
+                  currentPlaylist.tracks.items.map((item) => item.track)
+                );
+                setCurrentTrack({
+                  ...currentPlaylist.tracks.items[0].track,
+                  playingFrom: { type: "playlist", id: currentPlaylist.id },
+                });
+                setIsTrackPlaying(true);
+              } else {
+                setIsTrackPlaying(!isTrackPlaying);
               }
             }}
           >
-            {isTrackPlaying && currentPlaylist.id === playlistBeingPlayed.id ? (
+            {isTrackPlaying &&
+            currentTrack?.playingFrom?.id === currentPlaylist.id ? (
               <BsPauseFill className="play-icon" />
             ) : (
               <BsPlayFill className="play-icon" />
@@ -126,15 +135,16 @@ const PlaylistPage = () => {
               <LuClock3 className="clock-icon" />
             </div>
           </div>
-          {currentPlaylistTracks.map((item) => {
+          {currentPlaylistTracks.map((item, index) => {
             if (item.track === null) return;
-            index++;
             return (
               <Track
                 key={item.track.id}
-                item={item}
-                index={index}
-                playlist={currentPlaylist}
+                track={item.track}
+                index={index + 1}
+                playingFrom={{ type: "playlist", id: currentPlaylist.id }}
+                queue={currentPlaylist.tracks.items.map((item) => item.track)}
+                addedAt={item.added_at}
               />
             );
           })}
@@ -148,7 +158,6 @@ const Wrapper = styled.section`
   background-color: var(--black);
   height: calc(100vh - 11rem);
   padding: 0.8rem;
-  /* grid-template-rows: 2 / -1; */
 
   .main {
     width: 100%;

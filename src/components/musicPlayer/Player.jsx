@@ -13,7 +13,7 @@ const Player = () => {
     setCurrentTrack,
     isTrackPlaying,
     setIsTrackPlaying,
-    playlistBeingPlayed,
+    queue,
   } = useGlobalContext();
   const [progress, setProgress] = useState(0);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -21,9 +21,12 @@ const Player = () => {
   const musicBar = useRef();
   const musicThumb = useRef();
   const duration = currentTrack?.duration_ms / 1000;
-  const currentTrackIndex = playlistBeingPlayed?.tracks?.items?.findIndex(
-    (item) => item.track.id === currentTrack.id
-  );
+  const currentTrackIndex = queue?.findIndex((track) => {
+    console.log(track, currentTrack);
+    return track?.id === currentTrack?.id;
+  });
+
+  console.log(currentTrackIndex);
 
   const resetProgressBar = () => {
     const barStyleWidth = +getComputedStyle(musicBar.current).width.replace(
@@ -66,12 +69,18 @@ const Player = () => {
               resetProgressBar();
               return 0;
             }
-            // Move the state update to the useEffect to avoid the warning
-            // Update context state in the next render cycle
             setTimeout(() => {
-              setCurrentTrack(
-                playlistBeingPlayed.tracks.items[currentTrackIndex + 1].track
-              );
+              console.log(queue, currentTrackIndex);
+              if (!queue[currentTrackIndex + 1]) {
+                resetProgressBar();
+                setIsTrackPlaying(false);
+                return 0;
+              }
+              console.log(queue[currentTrackIndex + 1]);
+              setCurrentTrack({
+                ...currentTrack,
+                ...queue[currentTrackIndex + 1],
+              });
             }, 0);
             return 0;
           }
@@ -82,6 +91,7 @@ const Player = () => {
       clearAllIntervals();
     }
   }, [isTrackPlaying, currentTrack, repeatState]);
+
   const changeTime = (e) => {
     const { offsetX } = e.nativeEvent;
     const barStyleWidth = +getComputedStyle(musicBar.current).width.replace(
@@ -104,13 +114,12 @@ const Player = () => {
   // }, [progress]);
 
   const skipToNext = () => {
-    if (currentTrackIndex + 1 === playlistBeingPlayed.tracks.items.length) {
-      setCurrentTrack(playlistBeingPlayed.tracks.items[0].track);
+    if (currentTrackIndex + 1 === queue.length) {
+      setCurrentTrack({ ...currentTrack, ...queue[0] });
       return;
     }
-    const nextTrack =
-      playlistBeingPlayed.tracks.items[currentTrackIndex + 1].track;
-    setCurrentTrack(nextTrack);
+    const nextTrack = queue[currentTrackIndex + 1];
+    setCurrentTrack({ ...currentTrack, ...nextTrack });
     setIsTrackPlaying(true);
   };
 
@@ -120,9 +129,8 @@ const Player = () => {
       setProgress(0);
       return;
     }
-    const previousTrack =
-      playlistBeingPlayed.tracks.items[currentTrackIndex - 1].track;
-    setCurrentTrack(previousTrack);
+    const previousTrack = queue[currentTrackIndex - 1];
+    setCurrentTrack({ ...currentTrack, ...previousTrack });
     setIsTrackPlaying(true);
   };
 

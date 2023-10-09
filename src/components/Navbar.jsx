@@ -3,7 +3,7 @@ import { useGlobalContext } from "../context";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 const Navbar = () => {
-  const { user } = useGlobalContext();
+  const { user, navbarContent } = useGlobalContext();
 
   return (
     <Wrapper>
@@ -14,6 +14,7 @@ const Navbar = () => {
         <button className="btn forward-btn">
           <IoIosArrowForward />
         </button>
+        <h3 className="navbar-content">{navbarContent}</h3>
       </div>
       <div className="right-side">
         <button className="btn animated-btn explore-premium-btn">
@@ -56,6 +57,11 @@ const Wrapper = styled.nav`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+
+  .navbar-content {
+    color: var(--white);
+    font-size: 2.2rem;
   }
 
   .right-side {

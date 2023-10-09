@@ -6,10 +6,12 @@ const Hero = ({ img, type, name, userName, children }) => {
       <div className="info">
         <img src={img} className="main-img" />
         <div className="info-text">
-          <p className="type">{type}</p>
+          <span className="type">{type}</span>
           <h1 className="name">{name}</h1>
           <div>
-            <p className="user-name">{userName}</p>
+            <a href="#" className="user-name">
+              {userName} •
+            </a>
             {children}
           </div>
         </div>
@@ -21,7 +23,7 @@ const Hero = ({ img, type, name, userName, children }) => {
 const Wrapper = styled.section`
   background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%), #686767;
   width: 100%;
-  height: 30rem;
+  height: 34rem;
   border-radius: 8px 8px 0 0;
   padding: 1.5rem 2rem;
 
@@ -50,7 +52,7 @@ const Wrapper = styled.section`
   }
 
   .name {
-    font-size: 6rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
   }
 
@@ -69,9 +71,23 @@ const Wrapper = styled.section`
 
   .info-text div {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    /* align-items: center; */
     gap: 0.5rem;
     font-size: 1.4rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--white);
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .user-name {
+    font-weight: 700;
   }
 
   .playlist-duration {

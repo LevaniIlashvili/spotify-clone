@@ -1,40 +1,37 @@
 import styled from "styled-components";
 import { formatTimeNumbers, formatDate } from "../helpers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import TrackHeart from "./TrackHeart";
 import { useGlobalContext } from "../context";
+import { Link } from "react-router-dom";
 
-const Track = ({ playlist, item, index }) => {
+const Track = ({ playingFrom, track, index, addedAt, queue }) => {
   const [isHovered, setIsHovered] = useState(false);
   const {
-    playlistBeingPlayed,
-    setPlaylistBeingPlayed,
     currentTrack,
     setCurrentTrack,
     setIsTrackPlaying,
     isTrackPlaying,
+    setQueue,
   } = useGlobalContext();
 
   const {
-    track: {
-      album: {
-        images: [, , { url: albumImageUrl }],
-        external_urls: { spotify: albumUrl },
-        name: albumName,
-      },
-      name: trackName,
-      explicit,
-      artists: [
-        {
-          external_urls: { spotify: artistUrl },
-          name: artistName,
-        },
-      ],
-      duration_ms: trackDuration,
+    name: trackName,
+    album: {
+      images: [, , { url: albumImageUrl }],
+      external_urls: { spotify: albumUrl },
+      name: albumName,
     },
-    added_at,
-  } = item;
+    explicit,
+    artists: [
+      {
+        external_urls: { spotify: artistUrl },
+        name: artistName,
+      },
+    ] = [],
+    duration_ms: trackDuration,
+  } = track;
 
   return (
     <Wrapper
@@ -48,13 +45,18 @@ const Track = ({ playlist, item, index }) => {
             <button
               className="play-btn"
               onClick={() => {
-                if (playlist.id !== playlistBeingPlayed.id) {
-                  setPlaylistBeingPlayed(playlist);
+                if (
+                  currentTrack?.id !== track.id ||
+                  playingFrom.id !== currentTrack?.playingFrom?.id
+                ) {
+                  setCurrentTrack({ ...track, playingFrom });
+                  setQueue(queue);
                 }
-                setCurrentTrack(item.track);
               }}
             >
-              {isTrackPlaying && item.track.id === currentTrack.id ? (
+              {isTrackPlaying &&
+              track.id === currentTrack?.id &&
+              playingFrom.id === currentTrack?.playingFrom?.id ? (
                 <BsPauseFill onClick={() => setIsTrackPlaying(false)} />
               ) : (
                 <BsPlayFill onClick={() => setIsTrackPlaying(true)} />
@@ -63,7 +65,10 @@ const Track = ({ playlist, item, index }) => {
           ) : (
             <span
               className={`track-index ${
-                currentTrack?.id === item.track.id ? "currently-playing" : ""
+                track.id === currentTrack?.id &&
+                playingFrom.id === currentTrack?.playingFrom?.id
+                  ? "currently-playing"
+                  : ""
               }`}
             >
               {index}
@@ -78,32 +83,39 @@ const Track = ({ playlist, item, index }) => {
           className="track-album-img"
         />
         <div className="track-artist-names">
-          <a
-            href="#"
+          <Link
+            to={`/track/${track?.id}`}
             className={`link track-link ${
-              currentTrack?.id === item.track.id ? "currently-playing" : ""
+              track.id === currentTrack?.id &&
+              playingFrom.id === currentTrack?.playingFrom?.id
+                ? "currently-playing"
+                : ""
             }`}
           >
             {trackName}
-          </a>
+          </Link>
           <div>
             {explicit && <span className="explicit">E</span>}
-            <a href={artistUrl} className="link artist-link">
-              {artistName}
-            </a>
+            {playingFrom.type === "playlist" && (
+              <a href={artistUrl} className="link artist-link">
+                {artistName}
+              </a>
+            )}
           </div>
         </div>
       </div>
       <div className="album-name">
-        <a className="link album-link" href={albumUrl}>
-          {albumName}
-        </a>
+        {playingFrom.type === "playlist" && (
+          <a className="link album-link" href={albumUrl}>
+            {albumName}
+          </a>
+        )}
       </div>
       <div className="date-added">
-        <span>{formatDate(added_at)}</span>
+        {playingFrom.type === "playlist" && <span>{formatDate(addedAt)}</span>}
       </div>
       <div className="is-track-liked-and-duration">
-        <span>{isHovered && <TrackHeart track={item.track} />}</span>
+        <span>{isHovered && <TrackHeart track={track} />}</span>
         <span className="duration">
           {formatTimeNumbers(trackDuration / 1000)}
         </span>

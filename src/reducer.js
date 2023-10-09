@@ -7,10 +7,11 @@ import {
   SET_PLAYLIST_FILTER_TEXT,
   SET_CURRENT_TRACK,
   SET_IS_TRACK_PLAYING,
-  SET_PLAYLIST_BEING_PLAYED,
+  SET_QUEUE,
   SET_VOLUME,
   SET_IS_MUTED,
   SET_IS_SIDEBAR_OPEN,
+  SET_NAVBAR_CONTENT,
 } from "./actions";
 
 const reducer = (state, action) => {
@@ -74,14 +75,16 @@ const reducer = (state, action) => {
       return { ...state, currentTrack: action.payload };
     case SET_IS_TRACK_PLAYING:
       return { ...state, isTrackPlaying: action.payload };
-    case SET_PLAYLIST_BEING_PLAYED:
-      return { ...state, playlistBeingPlayed: action.payload };
+    case SET_QUEUE:
+      return { ...state, queue: action.payload };
     case SET_VOLUME:
       return { ...state, volume: action.payload };
     case SET_IS_MUTED:
       return { ...state, isMuted: action.payload };
     case SET_IS_SIDEBAR_OPEN:
       return { ...state, isSidebarOpen: action.payload };
+    case SET_NAVBAR_CONTENT:
+      return { ...state, navbarContent: action.payload };
     default:
       return state;
   }
