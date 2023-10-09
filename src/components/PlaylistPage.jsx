@@ -87,15 +87,15 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
           name={currentPlaylist.name}
           userName={currentPlaylist.owner.display_name}
         >
-          <p>{` • ${currentPlaylistTracks.length} songs,`}</p>
-          <p className="playlist-duration">
+          <span>{` ${currentPlaylistTracks.length} songs,`}</span>
+          <span className="playlist-duration">
             {formatTimeMixed(
               currentPlaylistTracks.reduce((acc, item) => {
                 if (item.track === null) return acc;
                 return acc + item.track?.duration_ms;
               }, 0) / 1000
             )}
-          </p>
+          </span>
         </Hero>
         <div className="playlist-options-container">
           <button

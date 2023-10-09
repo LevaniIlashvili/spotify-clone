@@ -137,8 +137,8 @@ const Sidebar = () => {
                 <div>
                   <p
                     className={`name ${
-                      currentTrack.playingFrom.type === "playlist" &&
-                      currentTrack.playingFrom.id === playlist.id
+                      currentTrack?.playingFrom.type === "playlist" &&
+                      currentTrack?.playingFrom.id === playlist.id
                         ? "currently-playing"
                         : ""
                     }`}

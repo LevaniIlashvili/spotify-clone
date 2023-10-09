@@ -21,12 +21,9 @@ const Player = () => {
   const musicBar = useRef();
   const musicThumb = useRef();
   const duration = currentTrack?.duration_ms / 1000;
-  const currentTrackIndex = queue?.findIndex((track) => {
-    console.log(track, currentTrack);
-    return track?.id === currentTrack?.id;
-  });
-
-  console.log(currentTrackIndex);
+  const currentTrackIndex = queue?.findIndex(
+    (track) => track?.id === currentTrack?.id
+  );
 
   const resetProgressBar = () => {
     const barStyleWidth = +getComputedStyle(musicBar.current).width.replace(
@@ -70,13 +67,11 @@ const Player = () => {
               return 0;
             }
             setTimeout(() => {
-              console.log(queue, currentTrackIndex);
               if (!queue[currentTrackIndex + 1]) {
                 resetProgressBar();
                 setIsTrackPlaying(false);
                 return 0;
               }
-              console.log(queue[currentTrackIndex + 1]);
               setCurrentTrack({
                 ...currentTrack,
                 ...queue[currentTrackIndex + 1],

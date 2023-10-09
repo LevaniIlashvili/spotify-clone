@@ -9,6 +9,7 @@ import styled from "styled-components";
 import PlaylistPage from "./components/PlaylistPage";
 import Navbar from "./components/Navbar";
 import TrackPage from "./components/TrackPage";
+import AlbumPage from "./components/AlbumPage";
 
 const App = () => {
   const {
@@ -77,6 +78,10 @@ const App = () => {
           <Route
             path="/track/:id"
             element={<TrackPage handleNavbarScroll={handleNavbarScroll} />}
+          />
+          <Route
+            path="/album/:id"
+            element={<AlbumPage handleNavbarScroll={handleNavbarScroll} />}
           />
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>

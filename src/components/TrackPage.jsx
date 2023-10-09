@@ -51,6 +51,24 @@ const TrackPage = ({ handleNavbarScroll }) => {
     }
   };
 
+  const playPageTrack = () => {
+    if (pageTrack.id !== currentTrack?.playingFrom.id) {
+      setIsTrackPlaying(true);
+      setCurrentTrack({
+        ...pageTrack,
+        playingFrom: { type: "trackPage", id: pageTrack.id },
+      });
+      setQueue([pageTrack]);
+    } else if (
+      pageTrack.id === currentTrack?.playingFrom.id &&
+      !isTrackPlaying
+    ) {
+      setIsTrackPlaying(true);
+    } else {
+      setIsTrackPlaying(false);
+    }
+  };
+
   useEffect(() => {
     getPageTrack();
     getArtists();
@@ -84,27 +102,10 @@ const TrackPage = ({ handleNavbarScroll }) => {
               ref={playBtnRef}
               type="button"
               className="start-playlist-btn animated-btn"
-              onClick={() => {
-                console.log(currentTrack);
-                if (pageTrack.id !== currentTrack?.playingFrom.id) {
-                  setIsTrackPlaying(true);
-                  setCurrentTrack({
-                    ...pageTrack,
-                    playingFrom: { type: "trackPage", id: pageTrack.id },
-                  });
-                  setQueue([pageTrack]);
-                } else if (
-                  pageTrack.id === currentTrack?.playingFrom.id &&
-                  !isTrackPlaying
-                ) {
-                  setIsTrackPlaying(true);
-                } else {
-                  setIsTrackPlaying(false);
-                }
-              }}
+              onClick={playPageTrack}
             >
               {isTrackPlaying &&
-              pageTrack.id === currentTrack.playingFrom.id ? (
+              pageTrack.id === currentTrack?.playingFrom.id ? (
                 <BsPauseFill className="play-icon" />
               ) : (
                 <BsPlayFill className="play-icon" />
@@ -112,7 +113,6 @@ const TrackPage = ({ handleNavbarScroll }) => {
             </button>
           </div>
           {artists?.map((artist, index) => {
-            // console.log(artist);
             return (
               <div key={index} className="artist-container">
                 <img src={artist?.images[2].url} alt="artist image" />{" "}
@@ -180,8 +180,6 @@ const Wrapper = styled.section`
     align-items: center;
     gap: 2rem;
     height: 10rem;
-    /* padding: 2rem; */
-    /* background: linear-gradient(transparent 0, black 1000000%), #313131; */
   }
 
   .start-playlist-btn {
@@ -241,75 +239,6 @@ const Wrapper = styled.section`
   .artist-container div a:hover {
     text-decoration: underline;
   }
-
-  /*
-
-  .tracks {
-    width: 100%;
-    background: linear-gradient(transparent 0, black 20%), #313131;
-    padding: 1.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tracks-top {
-    display: grid;
-    padding: 0.9rem 2rem;
-    grid-template-columns: 0.2fr 2fr 1.5fr 1fr 1fr;
-    gap: 1rem;
-    color: var(--gray);
-    font-size: 1.4rem;
-    border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
-    margin-bottom: 1.5rem;
-  }
-
-  .track-duration {
-    margin-left: 6rem;
-  }
-
-  .clock-icon {
-    font-size: 1.8rem;
-  }
-
-  @media (max-width: 1280px) {
-    .playlist-img {
-      width: 19.2rem;
-      height: 19.2rem;
-    }
-  }
-
-  @media (max-width: 1070px) {
-    .tracks-top {
-      grid-template-columns: 0.2fr 4fr 2fr 1.5fr;
-      gap: 2rem;
-    }
-
-    .playlist-name {
-      font-size: 4rem;
-    }
-
-    .track-date-added {
-      display: none;
-    }
-
-    .track-duration {
-      margin-left: 5rem;
-    }
-  }
-
-  @media (max-width: 840px) {
-    .tracks-top {
-      grid-template-columns: 0.2fr 5fr 2fr;
-    }
-
-    .playlist-name {
-      font-size: 3rem;
-    }
-
-    .track-album-name {
-      display: none;
-    }
-  } */
 `;
 
 export default TrackPage;

@@ -19,10 +19,10 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
   const {
     name: trackName,
     album: {
-      images: [, , { url: albumImageUrl }],
-      external_urls: { spotify: albumUrl },
+      images: [, , { url: albumImageUrl = {} } = {}] = [],
       name: albumName,
-    },
+      id: albumId,
+    } = {},
     explicit,
     artists: [
       {
@@ -77,11 +77,13 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
         </span>
       </div>
       <div className="track-preview">
-        <img
-          src={albumImageUrl}
-          alt="album image"
-          className="track-album-img"
-        />
+        {playingFrom.type !== "album" && (
+          <img
+            src={albumImageUrl}
+            alt="album image"
+            className="track-album-img"
+          />
+        )}
         <div className="track-artist-names">
           <Link
             to={`/track/${track?.id}`}
@@ -96,19 +98,20 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
           </Link>
           <div>
             {explicit && <span className="explicit">E</span>}
-            {playingFrom.type === "playlist" && (
-              <a href={artistUrl} className="link artist-link">
-                {artistName}
-              </a>
-            )}
+            {playingFrom.type === "playlist" ||
+              (playingFrom.type === "album" && (
+                <a href={artistUrl} className="link artist-link">
+                  {artistName}
+                </a>
+              ))}
           </div>
         </div>
       </div>
       <div className="album-name">
         {playingFrom.type === "playlist" && (
-          <a className="link album-link" href={albumUrl}>
+          <Link to={`/album/${albumId}`} className="link album-link">
             {albumName}
-          </a>
+          </Link>
         )}
       </div>
       <div className="date-added">
@@ -132,6 +135,7 @@ const Wrapper = styled.section`
   align-items: center;
   padding: 0.9rem 2rem;
   border-radius: 4px;
+  height: 5.8rem;
 
   &:hover {
     background-color: hsla(0, 0%, 100%, 0.2);

@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, navbarContent } = useGlobalContext();
+  const { user, navbarContent, setNavbarContent } = useGlobalContext();
+  const location = useLocation();
+
+  useEffect(() => setNavbarContent(""), [location]);
 
   return (
     <Wrapper>
