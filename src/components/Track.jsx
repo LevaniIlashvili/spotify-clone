@@ -24,12 +24,7 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
       id: albumId,
     } = {},
     explicit,
-    artists: [
-      {
-        external_urls: { spotify: artistUrl },
-        name: artistName,
-      },
-    ] = [],
+    artists: [{ id: artistId, name: artistName }] = [],
     duration_ms: trackDuration,
   } = track;
 
@@ -98,12 +93,12 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
           </Link>
           <div>
             {explicit && <span className="explicit">E</span>}
-            {playingFrom.type === "playlist" ||
-              (playingFrom.type === "album" && (
-                <a href={artistUrl} className="link artist-link">
-                  {artistName}
-                </a>
-              ))}
+            {(playingFrom.type === "playlist" ||
+              playingFrom.type === "album") && (
+              <Link to={`/artist/${artistId}`} className="link artist-link">
+                {artistName}
+              </Link>
+            )}
           </div>
         </div>
       </div>

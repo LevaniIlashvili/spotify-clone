@@ -115,6 +115,7 @@ const Wrapper = styled.section`
   height: calc(100vh - 11rem);
   padding: 0.8rem;
   color: var(--white);
+  grid-column: 2 / 3;
 
   .container {
     width: 100%;

@@ -7,7 +7,12 @@ const Hero = ({ img, type, name, userName, children }) => {
         <img src={img} className="main-img" />
         <div className="info-text">
           <span className="type">{type}</span>
-          <h1 className="name">{name}</h1>
+          <h1
+            className="name"
+            style={{ fontSize: name.length >= 30 ? "3vw" : "5vw" }}
+          >
+            {name}
+          </h1>
           <div>
             <a href="#" className="user-name">
               {userName} •
@@ -52,7 +57,7 @@ const Wrapper = styled.section`
   }
 
   .name {
-    font-size: 2rem;
+    font-size: 5vw;
     margin-bottom: 2rem;
   }
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useGlobalContext } from "../context";
 import { useEffect, useState } from "react";
 
-const ArtistPopularTracks = ({ artist }) => {
+const ArtistPopularTracks = ({ artist, renderedIn }) => {
   const { accessToken } = useGlobalContext();
   const [artistsTopTracks, setArtistsTopTracks] = useState(null);
   const [showMore, setShowMore] = useState(false);
@@ -33,14 +33,16 @@ const ArtistPopularTracks = ({ artist }) => {
       <h3>{artist?.name}</h3>
       <section className="tracks">
         {artistsTopTracks?.slice(0, showMore ? 10 : 5).map((track, index) => {
-          console.log(track);
           if (track === null) return;
           return (
             <Track
               key={track.id}
               track={track}
               index={index + 1}
-              playingFrom={{ type: "popularTracks", id: artist.id }}
+              playingFrom={{
+                type: renderedIn ? renderedIn : "popularTracks",
+                id: artist.id,
+              }}
               queue={artistsTopTracks}
             />
           );

@@ -158,6 +158,7 @@ const Wrapper = styled.section`
   background-color: var(--black);
   height: calc(100vh - 11rem);
   padding: 0.8rem;
+  grid-column: 2/ 3;
 
   .main {
     width: 100%;
