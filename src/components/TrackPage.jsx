@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { formatTimeNumbers } from "../helpers";
@@ -20,6 +20,8 @@ const TrackPage = ({ handleNavbarScroll }) => {
     setIsTrackPlaying,
     setQueue,
   } = useGlobalContext();
+
+  const navigate = useNavigate();
 
   const [pageTrack, setPageTrack] = useState(null);
   const [artists, setArtists] = useState(null);
@@ -113,12 +115,17 @@ const TrackPage = ({ handleNavbarScroll }) => {
             </button>
           </div>
           {artists?.map((artist, index) => {
+            console.log(artist);
             return (
-              <div key={index} className="artist-container">
+              <div
+                key={index}
+                className="artist-container"
+                onClick={() => navigate(`/artist/${artist?.id}`)}
+              >
                 <img src={artist?.images[2].url} alt="artist image" />{" "}
                 <div>
                   <p>Artist</p>
-                  <a href="#">{artist?.name}</a>
+                  <Link to={`/artist/${artist?.id}`}>{artist?.name}</Link>
                 </div>
               </div>
             );
