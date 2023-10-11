@@ -7,14 +7,14 @@ import { formatTimeMixed } from "../helpers";
 import Track from "./Track";
 import { LuClock3 } from "react-icons/lu";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
+import { FiHeart } from "react-icons/fi";
 import LoadingScreen from "./LoadingScreen";
 import Hero from "./Hero";
-
-// let PLAYLIST_NAME_FONT_SIZE = 10;
 
 const PlaylistPage = ({ handleNavbarScroll }) => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [currentPlaylistTracks, setCurrentPlaylistTracks] = useState(null);
+  const [isPlaylistFollowed, setIsPlaylistFollowed] = useState(false);
   const { id } = useParams();
   const playBtnRef = useRef(null);
   const {
@@ -24,12 +24,12 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
     isTrackPlaying,
     setIsTrackPlaying,
     setQueue,
+    user,
+    userPlaylists,
+    setUserPlaylists,
   } = useGlobalContext();
 
-  // if (currentPlaylist?.name?.length > 13) {
-  //   console.log(currentPlaylist?.name?.length);
-  //   PLAYLIST_NAME_FONT_SIZE = 6;
-  // }
+  console.log(currentPlaylist);
 
   const getPlaylist = async () => {
     try {
@@ -55,17 +55,52 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
     }
   };
 
-  // setPlaylistBeingPlayed(currentPlaylist);
-  // const startPlayingPlaylist = () => {
-  //   setCurrentTrack(currentPlaylist.tracks.items[0].track);
-  //   // setTrackProgress(0);
-  //   setIsTrackPlaying(true);
-  //   console.log("start playing playlist");
-  // };
+  const checkIfPlaylistIsFollowed = async () => {
+    if (!id) return;
+    if (user.id !== currentPlaylist?.owner.id) {
+      try {
+        const response = await axios.get(
+          `https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        setIsPlaylistFollowed(response.data[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const toggleFollow = async () => {
+    setIsPlaylistFollowed(!isPlaylistFollowed);
+    try {
+      if (isPlaylistFollowed) {
+        await axios.delete(
+          `https://api.spotify.com/v1/playlists/${id}/followers`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        const updatedPlaylists = userPlaylists.filter(
+          (playlist) => playlist.id !== id
+        );
+        setUserPlaylists(updatedPlaylists);
+      } else {
+        await axios.put(
+          `https://api.spotify.com/v1/playlists/${id}/followers`,
+          {},
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        setUserPlaylists([...userPlaylists, currentPlaylist]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getPlaylist();
     getPlaylistTracks();
+    checkIfPlaylistIsFollowed();
   }, [id]);
 
   if (!currentPlaylist || !currentPlaylistTracks) {
@@ -101,7 +136,7 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
           <button
             ref={playBtnRef}
             type="button"
-            className="start-playlist animated-btn"
+            className="start-playlist-btn animated-btn"
             onClick={() => {
               if (currentTrack?.playingFrom?.id !== currentPlaylist.id) {
                 setQueue(
@@ -124,6 +159,16 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
               <BsPlayFill className="play-icon" />
             )}
           </button>
+          {currentPlaylist.owner.id !== user.id && (
+            <button
+              className="playlist-follow-btn animated-btn"
+              onClick={toggleFollow}
+            >
+              <FiHeart
+                className={`heart-icon ${isPlaylistFollowed ? "filled" : ""}`}
+              />
+            </button>
+          )}
         </div>
         <div className="tracks">
           <div className="tracks-top">
@@ -200,7 +245,7 @@ const Wrapper = styled.section`
     background: linear-gradient(transparent 0, black 1000000%), #313131;
   }
 
-  .start-playlist {
+  .start-playlist-btn {
     background-color: var(--green);
     height: 6rem;
     width: 6rem;
@@ -215,6 +260,27 @@ const Wrapper = styled.section`
 
   .play-icon {
     font-size: 2.8rem;
+  }
+
+  .playlist-follow-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 3.5rem;
+    color: var(--gray);
+  }
+
+  .playlist-follow-btn:hover {
+    color: var(--white);
+  }
+
+  .playlist-follow-btn:active {
+    color: var(--gray);
+  }
+
+  .heart-icon.filled {
+    fill: var(--green);
+    color: var(--green);
   }
 
   .tracks {
