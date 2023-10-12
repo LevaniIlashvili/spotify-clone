@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import YourPlaylists from "../components/YourPlaylists";
+import RecentlyPlayedTracks from "../components/RecentlyPlayedTracks";
 
 const HomePage = () => {
   const { accessToken, userPlaylists } = useGlobalContext();
@@ -27,6 +28,7 @@ const HomePage = () => {
     <Wrapper>
       <div className="container">
         <YourPlaylists />
+        <RecentlyPlayedTracks />
       </div>
     </Wrapper>
   );

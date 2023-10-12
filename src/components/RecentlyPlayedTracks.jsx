@@ -1,31 +1,60 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
-import { useState } from "react";
 
-const YourPlaylists = () => {
+const RecentlyPlayedTracks = () => {
+  const { accessToken } = useGlobalContext();
   const [showAll, setShowAll] = useState(false);
-  const { userPlaylists, user } = useGlobalContext();
+  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState(null);
+
+  const getRecentlyPlayedTracks = async () => {
+    try {
+      const response = await axios.get(
+        `
+      https://api.spotify.com/v1/me/player/recently-played`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      setRecentlyPlayedTracks(response.data.items);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRecentlyPlayedTracks();
+  }, []);
+
+  console.log(recentlyPlayedTracks);
+  if (!recentlyPlayedTracks) return;
 
   return (
     <Wrapper>
       <div className="top">
-        <h2>Your playlists</h2>
+        <h2>Recently played tracks</h2>
         <button onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show less" : "Show all"}
         </button>
       </div>
-      <div className="your-playlists-container">
-        {userPlaylists
-          .filter((playlist) => playlist.owner.id === user.id)
-          .slice(0, showAll ? 20 : 7)
-          .map((playlist) => {
-            console.log(playlist);
+      <div className="recently-played-tracks-container">
+        {recentlyPlayedTracks
+          .filter((track, index, self) => {
             return (
-              <div className="playlist" key={playlist.id}>
-                <img src={playlist.images[1].url} alt="playlist image" />
+              self.findIndex((t) => t.track.id === track.track.id) === index
+            );
+          })
+          .slice(0, showAll ? 20 : 7)
+          .map(({ track }) => {
+            console.log(track);
+            return (
+              <div className="track" key={track.id}>
+                <img src={track.album.images[1].url} alt="track image" />
                 <div>
-                  <h4>{playlist.name}</h4>
-                  <p>By {playlist.owner.display_name}</p>
+                  <h4>{track.name}</h4>
+                  <p>{track.artists[0].name}</p>
                 </div>
               </div>
             );
@@ -36,8 +65,6 @@ const YourPlaylists = () => {
 };
 
 const Wrapper = styled.section`
-  margin-bottom: 2rem;
-
   .top {
     display: flex;
     justify-content: space-between;
@@ -55,43 +82,43 @@ const Wrapper = styled.section`
     color: var(--white);
   }
 
-  .your-playlists-container {
+  .recently-played-tracks-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
     gap: 2rem;
   }
 
   @media (max-width: 2010px) {
-    .playlist:nth-child(7) {
+    .track:nth-child(7) {
       display: none;
     }
   }
 
   @media (max-width: 1725px) {
-    .playlist:nth-child(6) {
+    .track:nth-child(6) {
       display: none;
     }
   }
 
   @media (max-width: 1440px) {
-    .playlist:nth-child(5) {
+    .track:nth-child(5) {
       display: none;
     }
   }
 
   @media (max-width: 1155px) {
-    .playlist:nth-child(4) {
+    .track:nth-child(4) {
       display: none;
     }
   }
 
   @media (max-width: 925px) {
-    .playlist:nth-child(3) {
+    .track:nth-child(3) {
       display: none;
     }
   }
 
-  .playlist {
+  .track {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -103,11 +130,11 @@ const Wrapper = styled.section`
     transition: all 0.2s ease-out;
   }
 
-  .playlist:hover {
+  .track:hover {
     background-color: #303030;
   }
 
-  .playlist img {
+  .track img {
     width: 18rem;
     height: 18rem;
     border-radius: 5px;
@@ -115,7 +142,7 @@ const Wrapper = styled.section`
     box-shadow: 0rem 0rem 4rem #161616;
   }
 
-  .playlist div {
+  .track div {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -126,10 +153,10 @@ const Wrapper = styled.section`
     align-items: flex-start;
   }
 
-  .playlist div p {
+  .track div p {
     color: var(--gray);
     font-size: 1.5rem;
   }
 `;
 
-export default YourPlaylists;
+export default RecentlyPlayedTracks;
