@@ -1,6 +1,7 @@
 import { useGlobalContext } from "../../context";
 import styled from "styled-components";
 import TrackHeart from "../TrackHeart";
+import { Link } from "react-router-dom";
 
 function TrackInfo() {
   const { currentTrack } = useGlobalContext();
@@ -18,14 +19,14 @@ function TrackInfo() {
     <Wrapper className="track-info">
       <img src={`${image}`} alt="" />
       <div className="info">
-        <a href={trackUrl} className="name">
+        <Link to={`/track/${trackUrl}`} className="name">
           {name}
-        </a>
-        <a href={artistUrl} className="artist">
+        </Link>
+        <Link to={`/artist/${artistUrl}`} className="artist">
           {artists?.map((artist, index) =>
             artists.length === index + 1 ? artist.name : `${artist.name}, `
           )}
-        </a>
+        </Link>
       </div>
       {currentTrack && <TrackHeart track={currentTrack} />}
     </Wrapper>

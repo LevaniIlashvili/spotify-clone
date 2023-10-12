@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-import Login from "./components/Login";
-import Home from "./components/Home";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 import { useGlobalContext } from "./context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MusicPlayer from "./components/musicPlayer/MusicPlayer";
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
-import PlaylistPage from "./components/PlaylistPage";
+import PlaylistPage from "./pages/PlaylistPage";
 import Navbar from "./components/Navbar";
-import TrackPage from "./components/TrackPage";
-import AlbumPage from "./components/AlbumPage";
-import ArtistPage from "./components/ArtistPage";
+import TrackPage from "./pages/TrackPage";
+import AlbumPage from "./pages/AlbumPage";
+import ArtistPage from "./pages/ArtistPage";
 
 const App = () => {
   const {
@@ -58,7 +58,7 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <Login />
+        <LoginPage />
       </div>
     );
   }
@@ -71,7 +71,7 @@ const App = () => {
         <Navbar />
         <Sidebar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/playlist/:id"
             element={<PlaylistPage handleNavbarScroll={handleNavbarScroll} />}

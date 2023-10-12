@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { formatTimeMixed } from "../helpers";
-import Track from "./Track";
+import Track from "../components/Track";
 import { LuClock3 } from "react-icons/lu";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import { FiHeart } from "react-icons/fi";
-import LoadingScreen from "./LoadingScreen";
-import Hero from "./Hero";
+import LoadingScreen from "../components/LoadingScreen";
+import Hero from "../components/Hero";
 
 const PlaylistPage = ({ handleNavbarScroll }) => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);

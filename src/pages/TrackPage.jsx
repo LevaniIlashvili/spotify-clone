@@ -4,11 +4,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { formatTimeNumbers } from "../helpers";
-import LoadingScreen from "./LoadingScreen";
-import Hero from "./Hero";
+import LoadingScreen from "../components/LoadingScreen";
+import Hero from "../components/Hero";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import ArtistPopularTracks from "./ArtistPopularTracks";
-import FansAlsoLike from "./FansAlsoLike";
+import ArtistPopularTracks from "../components/ArtistPopularTracks";
+import FansAlsoLike from "../components/FansAlsoLike";
 
 const TrackPage = ({ handleNavbarScroll }) => {
   const { id } = useParams();

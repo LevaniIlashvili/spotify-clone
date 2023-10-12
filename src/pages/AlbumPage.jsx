@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import Hero from "./Hero";
+import Hero from "../components/Hero";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../context";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "../components/LoadingScreen";
 import { formatTimeMixed } from "../helpers";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import Track from "./Track";
+import Track from "../components/Track";
 
 const AlbumPage = ({ handleNavbarScroll }) => {
   const { id } = useParams();

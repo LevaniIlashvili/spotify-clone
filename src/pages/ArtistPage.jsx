@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "../components/LoadingScreen";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import ArtistPopularTracks from "./ArtistPopularTracks";
-import FansAlsoLike from "./FansAlsoLike";
+import ArtistPopularTracks from "../components/ArtistPopularTracks";
+import FansAlsoLike from "../components/FansAlsoLike";
 
 const ArtistPage = ({ handleNavbarScroll }) => {
   const {

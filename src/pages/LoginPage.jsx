@@ -1,7 +1,7 @@
 import { loginUrl } from "../spotify";
 import styled from "styled-components";
 
-function Login() {
+function LoginPage() {
   return (
     <Wrapper>
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" />
@@ -47,4 +47,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default Login;
+export default LoginPage;
