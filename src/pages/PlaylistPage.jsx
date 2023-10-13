@@ -17,6 +17,7 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
   const [isPlaylistFollowed, setIsPlaylistFollowed] = useState(false);
   const { id } = useParams();
   const playBtnRef = useRef(null);
+  const [loading, setLoading] = useState(true);
   const {
     accessToken,
     setCurrentTrack,
@@ -98,12 +99,30 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
   };
 
   useEffect(() => {
-    getPlaylist();
-    getPlaylistTracks();
-    checkIfPlaylistIsFollowed();
+    setLoading(true);
+
+    const promises = [
+      getPlaylist(),
+      getPlaylistTracks(),
+      checkIfPlaylistIsFollowed(),
+    ];
+
+    Promise.all(promises)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+
+    const container = document.querySelector(".container");
+    if (container) {
+      container.scrollTop = 0;
+    }
   }, [id]);
 
-  if (!currentPlaylist || !currentPlaylistTracks) {
+  if (loading) {
     return <LoadingScreen></LoadingScreen>;
   }
 

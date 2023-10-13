@@ -19,6 +19,7 @@ const ArtistPage = ({ handleNavbarScroll }) => {
   } = useGlobalContext();
   const { id } = useParams();
   const playBtnRef = useRef(null);
+  const [loading, setLoading] = useState(true);
   const [artist, setArtist] = useState(null);
   const [artistPopularTracks, setArtistPopularTracks] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -91,12 +92,30 @@ const ArtistPage = ({ handleNavbarScroll }) => {
   };
 
   useEffect(() => {
-    getArtist();
-    getArtistPopularTracks();
-    checkIfFollowing();
-  }, []);
+    setLoading(true);
 
-  if (!artist || !artistPopularTracks) {
+    const promises = [
+      getArtist(),
+      getArtistPopularTracks(),
+      checkIfFollowing(),
+    ];
+
+    Promise.all(promises)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+
+    const container = document.querySelector(".container");
+    if (container) {
+      container.scrollTop = 0;
+    }
+  }, [id]);
+
+  if (loading) {
     return <LoadingScreen />;
   }
 

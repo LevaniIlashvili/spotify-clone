@@ -20,6 +20,7 @@ const AlbumPage = ({ handleNavbarScroll }) => {
     setQueue,
   } = useGlobalContext();
   const playBtnRef = useRef(null);
+  const [loading, setLoading] = useState(true);
   const [album, setAlbum] = useState(null);
 
   const getAlbum = async () => {
@@ -28,18 +29,20 @@ const AlbumPage = ({ handleNavbarScroll }) => {
         `https://api.spotify.com/v1/albums/${id}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      console.log(response);
+      setLoading(false);
       setAlbum(response.data);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     getAlbum();
   }, []);
 
-  if (!album) {
+  if (loading) {
     return <LoadingScreen />;
   }
 

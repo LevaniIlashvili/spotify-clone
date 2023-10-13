@@ -26,6 +26,7 @@ const TrackPage = ({ handleNavbarScroll }) => {
   const [pageTrack, setPageTrack] = useState(null);
   const [artists, setArtists] = useState(null);
   const playBtnRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   const getPageTrack = async () => {
     try {
@@ -72,11 +73,26 @@ const TrackPage = ({ handleNavbarScroll }) => {
   };
 
   useEffect(() => {
-    getPageTrack();
-    getArtists();
+    setLoading(true);
+
+    const promises = [getPageTrack(), getArtists()];
+
+    Promise.all(promises)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+
+    const container = document.querySelector(".container");
+    if (container) {
+      container.scrollTop = 0;
+    }
   }, [artistIds, id]);
 
-  if (!pageTrack || !artists) {
+  if (loading) {
     return <LoadingScreen />;
   }
 
