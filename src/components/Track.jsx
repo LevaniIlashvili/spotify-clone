@@ -93,12 +93,21 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
           </Link>
           <div>
             {explicit && <span className="explicit">E</span>}
-            {(playingFrom.type === "playlist" ||
-              playingFrom.type === "album") && (
-              <Link to={`/artist/${artistId}`} className="link artist-link">
-                {artistName}
-              </Link>
-            )}
+            <span className="artist-link-container">
+              {(playingFrom.type === "playlist" ||
+                playingFrom.type === "album") &&
+                track.artists.map((artist, index) => (
+                  <Link
+                    key={artist.id}
+                    to={`/artist/${artist.id}`}
+                    className="link artist-link"
+                  >
+                    {track.artists.length === index + 1
+                      ? artist.name
+                      : `${artist.name}, `}
+                  </Link>
+                ))}
+            </span>
           </div>
         </div>
       </div>
@@ -162,6 +171,19 @@ const Wrapper = styled.section`
     flex-direction: column;
     gap: 0.5rem;
     min-width: 0;
+  }
+
+  .track-artist-names div {
+    /* width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+  }
+
+  .artist-link-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .link {
