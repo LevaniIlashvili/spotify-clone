@@ -6,7 +6,7 @@ import { VscLibrary } from "react-icons/vsc";
 import { BsPlusLg } from "react-icons/bs";
 import { MdClear } from "react-icons/md";
 import { BsMusicNoteBeamed } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import SortDropdown from "./SortDropdown";
 
@@ -20,6 +20,9 @@ const Sidebar = () => {
     setIsSidebarOpen,
     currentTrack,
   } = useGlobalContext();
+
+  const location = useLocation();
+  console.log(location.pathname.split("/")[1], location.pathname.split("/")[2]);
 
   const handleClickOutside = (e) => {
     if (
@@ -76,7 +79,12 @@ const Sidebar = () => {
 
   return (
     <Wrapper>
-      <Link to="/" className="link">
+      <Link
+        to="/"
+        className={`link home-link ${
+          location.pathname === "/" ? "selected" : ""
+        }`}
+      >
         <GoHomeFill className="home-icon" />
         <p>Home</p>
       </Link>
@@ -126,7 +134,15 @@ const Sidebar = () => {
         {filteredPlaylists.map((playlist) => {
           return (
             <li key={playlist.id}>
-              <Link to={`/playlist/${playlist.id}`} className="playlist">
+              <Link
+                to={`/playlist/${playlist.id}`}
+                className={`playlist ${
+                  location.pathname.split("/")[1] === "playlist" &&
+                  location.pathname.split("/")[2] === playlist.id
+                    ? "selected"
+                    : ""
+                }`}
+              >
                 {playlist.images[0]?.url ? (
                   <img src={playlist.images[0].url} className="playlist-img" />
                 ) : (
@@ -232,6 +248,15 @@ const Wrapper = styled.section`
     font-size: 2.8rem;
   }
 
+  .home-link {
+    color: var(--gray);
+  }
+
+  .home-link:hover,
+  .home-link.selected {
+    color: var(--white);
+  }
+
   .search-link {
     color: var(--dark-gray);
     margin-bottom: 4.5rem;
@@ -255,6 +280,7 @@ const Wrapper = styled.section`
   .search-link:hover .search-btn {
     color: var(--white);
   }
+
   .your-library {
     display: flex;
     justify-content: space-between;
@@ -388,8 +414,13 @@ const Wrapper = styled.section`
     border-radius: 4px;
   }
 
-  .playlist:hover {
-    background-color: #1a1a1a;
+  .playlist:hover,
+  .playlist.selected {
+    background-color: #292929;
+  }
+
+  .playlist.selected:hover {
+    background-color: #3a3a3a;
   }
 
   .name {
