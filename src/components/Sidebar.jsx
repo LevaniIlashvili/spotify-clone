@@ -57,7 +57,7 @@ const Sidebar = () => {
             console.log(playlist);
             return (
               <li key={playlist.id} className="playlist">
-                <Link>
+                <Link to={`playlist/${playlist.id}`}>
                   {playlist.images[0]?.url ? (
                     <img src={playlist.images[0].url} />
                   ) : (
@@ -423,7 +423,7 @@ const Wrapper = styled.section`
 `;
 
 const Wrapper2 = styled.section`
-  min-height: calc(100vh - 8rem);
+  min-height: calc(100vh - 6rem);
   background-color: var(--black);
   display: flex;
   flex-direction: column;

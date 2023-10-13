@@ -17,6 +17,7 @@ const Wrapper = styled.section`
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
+  grid-column: 2 / 3;
 
   .dot {
     width: 0.8rem;
