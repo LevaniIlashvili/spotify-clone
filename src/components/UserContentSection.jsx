@@ -12,22 +12,25 @@ const UserContentSection = ({
 }) => {
   const { accessToken, userPlaylists } = useGlobalContext();
   const [showAll, setShowAll] = useState(false);
-  const [data, setData] = useState(userPlaylists);
+  const [data, setData] = useState(null);
 
   const fetchData = async () => {
-    try {
-      const response = await axios.get(endpoint, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      console.log(`${title} - `, response);
-      setData(response.data[dataKey]);
-    } catch (error) {
-      console.log(error);
+    if (endpoint) {
+      try {
+        const response = await axios.get(endpoint, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log(`${title} - `, response);
+        setData(response.data[dataKey]);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setData(userPlaylists);
     }
   };
 
   useEffect(() => {
-    if (!endpoint) return;
     fetchData();
   }, []);
 
@@ -52,6 +55,8 @@ const UserContentSection = ({
 };
 
 const Wrapper = styled.section`
+  margin-bottom: 2rem;
+
   .top {
     display: flex;
     justify-content: space-between;
