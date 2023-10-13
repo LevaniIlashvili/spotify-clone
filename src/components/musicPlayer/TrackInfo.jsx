@@ -8,7 +8,6 @@ function TrackInfo() {
   const { album, artists, name, external_urls } = currentTrack || {};
   const { images } = album || {};
 
-  const { spotify: artistUrl } = artists?.[0]?.external_urls || {};
   const { spotify: trackUrl } = external_urls || {};
 
   const image = images?.[2]?.url;
@@ -22,11 +21,17 @@ function TrackInfo() {
         <Link to={`/track/${trackUrl}`} className="name">
           {name}
         </Link>
-        <Link to={`/artist/${artistUrl}`} className="artist">
-          {artists?.map((artist, index) =>
-            artists.length === index + 1 ? artist.name : `${artist.name}, `
-          )}
-        </Link>
+        <div>
+          {artists?.map((artist, index) => (
+            <Link
+              key={artist.id}
+              to={`/artist/${artist.id}`}
+              className="artist"
+            >
+              {artists.length === index + 1 ? artist.name : `${artist.name}, `}
+            </Link>
+          ))}
+        </div>
       </div>
       {currentTrack && <TrackHeart track={currentTrack} />}
     </Wrapper>
@@ -42,7 +47,6 @@ const Wrapper = styled.section`
   .info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     white-space: nowrap;
     overflow: hidden;
     position: relative;
@@ -91,6 +95,8 @@ const Wrapper = styled.section`
       transform: translateX(-100%);
     }
   } */
+
+  /* .infod */
 
   .artist {
     font-size: 1.1rem;
