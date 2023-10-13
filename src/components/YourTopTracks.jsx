@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import UserContentSection from "./UserContentSection";
 
 const YourTopTracks = () => {
+  const navigate = useNavigate();
+
   return (
     <UserContentSection
       title="Your top tracks"
@@ -11,7 +14,11 @@ const YourTopTracks = () => {
         if (!track) return null;
 
         return (
-          <div className="item" key={track.id}>
+          <div
+            onClick={() => navigate(`/track/${track.id}`)}
+            className="item"
+            key={track.id}
+          >
             <img src={track.album.images[1].url} alt="item image" />
             <div>
               <h4>{track.name}</h4>

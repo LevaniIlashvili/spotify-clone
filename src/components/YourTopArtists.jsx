@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import UserContentSection from "./UserContentSection";
 
 const YourTopArtists = () => {
+  const navigate = useNavigate();
+
   return (
     <UserContentSection
       title="Your top artists"
@@ -11,7 +14,11 @@ const YourTopArtists = () => {
         if (!artist) return null;
 
         return (
-          <div className="item" key={artist.id}>
+          <div
+            onClick={() => navigate(`/artist/${artist.id}`)}
+            className="item"
+            key={artist.id}
+          >
             <img src={artist.images[1].url} alt="item image" />
             <div>
               <h4>{artist.name}</h4>

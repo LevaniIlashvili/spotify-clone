@@ -2,11 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const FansAlsoLike = ({ artistId }) => {
   const { accessToken } = useGlobalContext();
   const [similarArtists, setSimilarArtists] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
 
   const getSimilarArtists = async () => {
     try {
@@ -40,7 +42,11 @@ const FansAlsoLike = ({ artistId }) => {
       <div className="similar-artists-container">
         {similarArtists.slice(0, showAll ? 20 : 7).map((artist) => {
           return (
-            <div className="similar-artist" key={artist.id}>
+            <div
+              onClick={() => navigate(`/artist/${artist.id}`)}
+              className="similar-artist"
+              key={artist.id}
+            >
               <img src={artist.images[2].url} alt="artist image" />
               <div>
                 <h4>{artist.name}</h4>
