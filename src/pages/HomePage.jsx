@@ -1,34 +1,17 @@
-import axios from "axios";
-import { useEffect } from "react";
 import styled from "styled-components";
-import { useGlobalContext } from "../context";
 import YourPlaylists from "../components/YourPlaylists";
 import RecentlyPlayedTracks from "../components/RecentlyPlayedTracks";
+import YourTopArtists from "../components/YourTopArtists";
+import YourTopTracks from "../components/YourTopTracks";
 
 const HomePage = () => {
-  const { accessToken, userPlaylists } = useGlobalContext();
-
-  // const getUserTopArtists = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20&offset=0`,
-  //       { headers: { Authorization: `Bearer ${accessToken}` } }
-  //     );
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  useEffect(() => {
-    // getUserTopArtists();
-  }, []);
-
   return (
     <Wrapper>
       <div className="container">
         <YourPlaylists />
         <RecentlyPlayedTracks />
+        <YourTopArtists />
+        <YourTopTracks />
       </div>
     </Wrapper>
   );

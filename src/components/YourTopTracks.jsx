@@ -1,72 +1,59 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import { useGlobalContext } from "../context";
+import styled from "styled-components";
 
-const RecentlyPlayedTracks = () => {
+const YourTopTracks = () => {
   const { accessToken } = useGlobalContext();
   const [showAll, setShowAll] = useState(false);
-  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState(null);
+  const [userTopTracks, setUserTopTracks] = useState(null);
 
-  const getRecentlyPlayedTracks = async () => {
+  const getUserTopTracks = async () => {
     try {
       const response = await axios.get(
-        `
-      https://api.spotify.com/v1/me/player/recently-played`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        `https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20&offset=0`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      setRecentlyPlayedTracks(response.data.items);
       console.log(response);
+      setUserTopTracks(response.data.items);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getRecentlyPlayedTracks();
+    getUserTopTracks();
   }, []);
 
-  console.log(recentlyPlayedTracks);
-  if (!recentlyPlayedTracks) return;
+  if (!userTopTracks) return;
 
   return (
     <Wrapper>
       <div className="top">
-        <h2>Recently played tracks</h2>
+        <h2>Your top tracks</h2>
         <button onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show less" : "Show all"}
         </button>
       </div>
-      <div className="recently-played-tracks-container">
-        {recentlyPlayedTracks
-          .filter((track, index, self) => {
-            return (
-              self.findIndex((t) => t.track.id === track.track.id) === index
-            );
-          })
-          .slice(0, showAll ? 20 : 7)
-          .map(({ track }) => {
-            console.log(track);
-            return (
-              <div className="track" key={track.id}>
-                <img src={track.album.images[1].url} alt="track image" />
-                <div>
-                  <h4>{track.name}</h4>
-                  <p>{track.artists[0].name}</p>
-                </div>
+      <div className="your-top-tracks-container">
+        {userTopTracks.slice(0, showAll ? 20 : 7).map((track) => {
+          console.log(track);
+          return (
+            <div className="track" key={track.id}>
+              <img src={track.album.images[1].url} alt="track image" />
+              <div>
+                <h4>{track.name}</h4>
+                <p>{track.artists[0].name}</p>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  margin-bottom: 2rem;
-
   .top {
     display: flex;
     justify-content: space-between;
@@ -84,7 +71,7 @@ const Wrapper = styled.section`
     color: var(--white);
   }
 
-  .recently-played-tracks-container {
+  .your-top-tracks-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
     gap: 2rem;
@@ -161,4 +148,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default RecentlyPlayedTracks;
+export default YourTopTracks;

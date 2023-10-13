@@ -1,72 +1,58 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import { useGlobalContext } from "../context";
+import styled from "styled-components";
 
-const RecentlyPlayedTracks = () => {
+const YourTopArtists = () => {
   const { accessToken } = useGlobalContext();
   const [showAll, setShowAll] = useState(false);
-  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState(null);
+  const [userTopArtists, setUserTopArtists] = useState(null);
 
-  const getRecentlyPlayedTracks = async () => {
+  const getUserTopArtists = async () => {
     try {
       const response = await axios.get(
-        `
-      https://api.spotify.com/v1/me/player/recently-played`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        `https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20&offset=0`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      setRecentlyPlayedTracks(response.data.items);
       console.log(response);
+      setUserTopArtists(response.data.items);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getRecentlyPlayedTracks();
+    getUserTopArtists();
   }, []);
 
-  console.log(recentlyPlayedTracks);
-  if (!recentlyPlayedTracks) return;
+  if (!userTopArtists) return;
 
   return (
     <Wrapper>
       <div className="top">
-        <h2>Recently played tracks</h2>
+        <h2>Your top artists</h2>
         <button onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show less" : "Show all"}
         </button>
       </div>
-      <div className="recently-played-tracks-container">
-        {recentlyPlayedTracks
-          .filter((track, index, self) => {
-            return (
-              self.findIndex((t) => t.track.id === track.track.id) === index
-            );
-          })
-          .slice(0, showAll ? 20 : 7)
-          .map(({ track }) => {
-            console.log(track);
-            return (
-              <div className="track" key={track.id}>
-                <img src={track.album.images[1].url} alt="track image" />
-                <div>
-                  <h4>{track.name}</h4>
-                  <p>{track.artists[0].name}</p>
-                </div>
+      <div className="your-top-artists-container">
+        {userTopArtists.slice(0, showAll ? 20 : 7).map((artist) => {
+          console.log(artist);
+          return (
+            <div className="artist" key={artist.id}>
+              <img src={artist.images[1].url} alt="artist image" />
+              <div>
+                <h4>{artist.name}</h4>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  margin-bottom: 2rem;
-
   .top {
     display: flex;
     justify-content: space-between;
@@ -84,43 +70,43 @@ const Wrapper = styled.section`
     color: var(--white);
   }
 
-  .recently-played-tracks-container {
+  .your-top-artists-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
     gap: 2rem;
   }
 
   @media (max-width: 2010px) {
-    .track:nth-child(7) {
+    .artist:nth-child(7) {
       display: none;
     }
   }
 
   @media (max-width: 1725px) {
-    .track:nth-child(6) {
+    .artist:nth-child(6) {
       display: none;
     }
   }
 
   @media (max-width: 1440px) {
-    .track:nth-child(5) {
+    .artist:nth-child(5) {
       display: none;
     }
   }
 
   @media (max-width: 1155px) {
-    .track:nth-child(4) {
+    .artist:nth-child(4) {
       display: none;
     }
   }
 
   @media (max-width: 925px) {
-    .track:nth-child(3) {
+    .artist:nth-child(3) {
       display: none;
     }
   }
 
-  .track {
+  .artist {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -132,11 +118,11 @@ const Wrapper = styled.section`
     transition: all 0.2s ease-out;
   }
 
-  .track:hover {
+  .artist:hover {
     background-color: #303030;
   }
 
-  .track img {
+  .artist img {
     width: 18rem;
     height: 18rem;
     border-radius: 5px;
@@ -144,7 +130,7 @@ const Wrapper = styled.section`
     box-shadow: 0rem 0rem 4rem #161616;
   }
 
-  .track div {
+  .artist div {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -155,10 +141,10 @@ const Wrapper = styled.section`
     align-items: flex-start;
   }
 
-  .track div p {
+  .artist div p {
     color: var(--gray);
     font-size: 1.5rem;
   }
 `;
 
-export default RecentlyPlayedTracks;
+export default YourTopArtists;
