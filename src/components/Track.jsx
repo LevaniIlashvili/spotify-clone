@@ -95,7 +95,8 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
             {explicit && <span className="explicit">E</span>}
             <span className="artist-link-container">
               {(playingFrom.type === "playlist" ||
-                playingFrom.type === "album") &&
+                playingFrom.type === "album" ||
+                playingFrom.type === "search") &&
                 track.artists.map((artist, index) => (
                   <Link
                     key={artist.id}
@@ -112,7 +113,7 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
         </div>
       </div>
       <div className="album-name">
-        {playingFrom.type === "playlist" && (
+        {(playingFrom.type === "playlist" || playingFrom.type === "search") && (
           <Link to={`/album/${albumId}`} className="link album-link">
             {albumName}
           </Link>

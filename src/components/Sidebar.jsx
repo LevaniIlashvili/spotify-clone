@@ -88,7 +88,7 @@ const Sidebar = () => {
         <GoHomeFill className="home-icon" />
         <p>Home</p>
       </Link>
-      <Link className="link search-link">
+      <Link to="/search" className="link search-link">
         <button className="search-btn">
           <FiSearch />
         </button>

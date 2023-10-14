@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import TrackPage from "./pages/TrackPage";
 import AlbumPage from "./pages/AlbumPage";
 import ArtistPage from "./pages/ArtistPage";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => {
   const {
@@ -88,6 +89,8 @@ const App = () => {
             path="/artist/:id"
             element={<ArtistPage handleNavbarScroll={handleNavbarScroll} />}
           />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/search/:id" element={<SearchPage />} />
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>
         <MusicPlayer />

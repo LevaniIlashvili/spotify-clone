@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { user, navbarContent, setNavbarContent } = useGlobalContext();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => setNavbarContent(""), [location]);
 
@@ -20,11 +21,21 @@ const Navbar = () => {
           <IoIosArrowForward />
         </button>
         <h3 className="navbar-content">{navbarContent}</h3>
+        {location.pathname.split("/")[1] === "search" && (
+          <input
+            type="search"
+            className="search-input"
+            placeholder="What do you want to listen to ?"
+            onChange={({ target }) => navigate(`/search/${target.value}`)}
+          />
+        )}
       </div>
       <div className="right-side">
-        <button className="btn animated-btn explore-premium-btn">
-          Explore Premium
-        </button>
+        {location.pathname.split("/")[1] !== "search" && (
+          <button className="btn animated-btn explore-premium-btn">
+            Explore Premium
+          </button>
+        )}
         <button className="btn animated-btn install-app-btn">
           Install App
         </button>
@@ -62,6 +73,20 @@ const Wrapper = styled.nav`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+
+  .search-input {
+    background-color: #242424;
+    color: var(--white);
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 3rem;
+    width: 35rem;
+    height: 4.5rem;
+  }
+
+  .search-input:focus {
+    outline: 2px solid var(--white);
   }
 
   .navbar-content {
