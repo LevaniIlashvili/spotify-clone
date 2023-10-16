@@ -38,7 +38,10 @@ const FansAlsoLike = ({ artistId }) => {
           {showAll ? "Show less" : "Show all"}
         </button>
       </div>
-      <Artists artists={similarArtists.slice(0, showAll ? 20 : 7)} />
+      <Artists
+        artists={similarArtists.slice(0, showAll ? 20 : 7)}
+        display={showAll ? "full" : "limited"}
+      />
     </Wrapper>
   );
 };

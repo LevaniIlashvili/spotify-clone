@@ -37,7 +37,7 @@ const UserContentSection = ({
   if (!data) return null;
 
   return (
-    <Wrapper>
+    <Wrapper className={showAll ? "full" : "limited"}>
       <div className="top">
         <h2>{title}</h2>
         <button onClick={() => setShowAll(!showAll)}>
@@ -81,31 +81,31 @@ const Wrapper = styled.section`
   }
 
   @media (max-width: 2010px) {
-    .item:nth-child(7) {
+    &.limited .item:nth-child(7) {
       display: none;
     }
   }
 
   @media (max-width: 1725px) {
-    .item:nth-child(6) {
+    &.limited .item:nth-child(6) {
       display: none;
     }
   }
 
   @media (max-width: 1440px) {
-    .item:nth-child(5) {
+    &.limited .item:nth-child(5) {
       display: none;
     }
   }
 
   @media (max-width: 1155px) {
-    .item:nth-child(4) {
+    &.limited .item:nth-child(4) {
       display: none;
     }
   }
 
   @media (max-width: 925px) {
-    .item:nth-child(3) {
+    &.limited .item:nth-child(3) {
       display: none;
     }
   }
