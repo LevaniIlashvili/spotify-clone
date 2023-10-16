@@ -1,12 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AiOutlineUser } from "react-icons/ai";
 
 const Artist = ({ artist }) => {
   const navigate = useNavigate();
 
   return (
     <Wrapper onClick={() => navigate(`/artist/${artist.id}`)} key={artist.id}>
-      <img src={artist.images[2].url} alt="artist image" />
+      {artist.images[2]?.url ? (
+        <img src={artist.images[2].url} alt="artist image" />
+      ) : (
+        <div className="stock-image">
+          <AiOutlineUser className="stock-image-icon" />
+        </div>
+      )}
       <div>
         <h4>{artist.name}</h4>
         <p>Artist</p>
@@ -36,6 +43,23 @@ const Wrapper = styled.article`
     border-radius: 50%;
     margin-bottom: 2rem;
     box-shadow: 0rem 0rem 4rem #161616;
+  }
+
+  .stock-image {
+    background-color: #474747;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+    box-shadow: 0rem 0rem 4rem #161616;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stock-image-icon {
+    color: var(--gray);
+    font-size: 7rem;
   }
 
   div {
