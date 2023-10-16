@@ -5,6 +5,7 @@ import { useGlobalContext } from "../context";
 import { useEffect, useState } from "react";
 import Track from "../components/Track";
 import Artists from "../components/Artists";
+import Playlists from "../components/Playlists";
 
 const SearchPage = () => {
   const { id } = useParams();
@@ -30,10 +31,6 @@ const SearchPage = () => {
       console.log(error);
     }
   };
-
-  console.log(
-    selectedFilter === "artist" && searchResults[0].type === "artist"
-  );
 
   useEffect(() => {
     console.log("use effect called");
@@ -100,6 +97,9 @@ const SearchPage = () => {
         <div className="main-content">
           {selectedFilter === "artist" && searchResults[0].type === "artist" ? (
             <Artists artists={searchResults} />
+          ) : selectedFilter === "playlist" &&
+            searchResults[0].type === "playlist" ? (
+            <Playlists playlists={searchResults} />
           ) : (
             searchResults?.map((item, index) => {
               return (
