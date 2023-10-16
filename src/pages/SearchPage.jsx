@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useGlobalContext } from "../context";
 import { useEffect, useState } from "react";
 import Track from "../components/Track";
+import Artists from "../components/Artists";
 
 const SearchPage = () => {
   const { id } = useParams();
@@ -19,14 +20,23 @@ const SearchPage = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      console.log(response.data, selectedFilter);
+      console.log(
+        `https://api.spotify.com/v1/search?q=${id}&type=${selectedFilter}`,
+        response.data[selectedFilter + "s"].items,
+        selectedFilter
+      );
       setSearchResults(response.data[selectedFilter + "s"].items);
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(
+    selectedFilter === "artist" && searchResults[0].type === "artist"
+  );
+
   useEffect(() => {
+    console.log("use effect called");
     if (!id) return;
     getSearchResults();
   }, [id, selectedFilter]);
@@ -46,6 +56,16 @@ const SearchPage = () => {
             onChange={(e) => setSelectedFilter(e.target.value)}
           />
           <label htmlFor="Songs">Songs</label>
+
+          <input
+            type="radio"
+            name="filter"
+            id="Playlists"
+            value="playlist"
+            checked={selectedFilter === "playlist"}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+          />
+          <label htmlFor="Playlists">Playlists</label>
 
           <input
             type="radio"
@@ -70,16 +90,6 @@ const SearchPage = () => {
           <input
             type="radio"
             name="filter"
-            id="Playlists"
-            value="playlist"
-            checked={selectedFilter === "playlist"}
-            onChange={(e) => setSelectedFilter(e.target.value)}
-          />
-          <label htmlFor="Playlists">Playlists</label>
-
-          <input
-            type="radio"
-            name="filter"
             id="Shows"
             value="show"
             checked={selectedFilter === "show"}
@@ -88,18 +98,23 @@ const SearchPage = () => {
           <label htmlFor="Shows">Shows</label>
         </div>
         <div className="main-content">
-          {searchResults?.map((item, index) => {
-            return (
-              item.type === "track" && (
-                <Track
-                  track={item}
-                  playingFrom={{ type: "search" }}
-                  index={index + 1}
-                  queue={[item]}
-                />
-              )
-            );
-          })}
+          {selectedFilter === "artist" && searchResults[0].type === "artist" ? (
+            <Artists artists={searchResults} />
+          ) : (
+            searchResults?.map((item, index) => {
+              return (
+                item.type === "track" && (
+                  <Track
+                    track={item}
+                    playingFrom={{ type: "search" }}
+                    index={index + 1}
+                    queue={[item]}
+                    key={item.id}
+                  />
+                )
+              );
+            })
+          )}
         </div>
       </div>
     </Wrapper>
