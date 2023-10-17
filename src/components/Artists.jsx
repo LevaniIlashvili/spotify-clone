@@ -42,6 +42,7 @@ const Wrapper = styled.section`
   gap: 2rem;
 
   .artist {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,13 +85,17 @@ const Wrapper = styled.section`
 
   .text-container {
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
+  }
+
+  .text-container h4 {
+    width: calc(100%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .text-container p {

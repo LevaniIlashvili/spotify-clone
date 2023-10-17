@@ -57,13 +57,17 @@ const Wrapper = styled.section`
 
   .playlist div {
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
+  }
+
+  .playlist div h4 {
+    width: calc(100%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .playlist div p {
