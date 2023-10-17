@@ -15,13 +15,17 @@ const Artists = ({ artists, display }) => {
             key={artist.id}
           >
             {artist.images[2]?.url ? (
-              <img src={artist.images[2].url} alt="artist image" />
+              <img
+                src={artist.images[2].url}
+                alt="artist image"
+                className="artist-image"
+              />
             ) : (
               <div className="stock-image">
                 <AiOutlineUser className="stock-image-icon" />
               </div>
             )}
-            <div>
+            <div className="text-container">
               <h4>{artist.name}</h4>
               <p>Artist</p>
             </div>
@@ -53,7 +57,7 @@ const Wrapper = styled.section`
     background-color: #303030;
   }
 
-  .artist img {
+  .artist-image {
     width: 18rem;
     height: 18rem;
     border-radius: 50%;
@@ -78,7 +82,7 @@ const Wrapper = styled.section`
     font-size: 7rem;
   }
 
-  .artist div {
+  .text-container {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -89,7 +93,7 @@ const Wrapper = styled.section`
     align-items: flex-start;
   }
 
-  .artist div p {
+  .text-container p {
     color: var(--gray);
     font-size: 1.5rem;
   }
