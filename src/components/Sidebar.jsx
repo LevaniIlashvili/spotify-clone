@@ -88,7 +88,12 @@ const Sidebar = () => {
         <GoHomeFill className="home-icon" />
         <p>Home</p>
       </Link>
-      <Link to="/search" className="link search-link">
+      <Link
+        to="/search"
+        className={`link search-link ${
+          location.pathname === "/search" ? "selected" : ""
+        }`}
+      >
         <button className="search-btn">
           <FiSearch />
         </button>
@@ -277,7 +282,9 @@ const Wrapper = styled.section`
   }
 
   .search-link:hover,
-  .search-link:hover .search-btn {
+  .search-link:hover .search-btn,
+  .search-link.selected,
+  .search-link.selected .search-btn {
     color: var(--white);
   }
 
