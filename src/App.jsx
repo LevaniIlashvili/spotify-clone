@@ -90,7 +90,7 @@ const App = () => {
             element={<ArtistPage handleNavbarScroll={handleNavbarScroll} />}
           />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/search/:id" element={<SearchPage />} />
+          <Route path="/search/:searchQuery" element={<SearchPage />} />
           {/* <Route path="*" element={<Home />} /> */}
         </Routes>
         <MusicPlayer />

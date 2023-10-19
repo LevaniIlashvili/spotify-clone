@@ -1,48 +1,75 @@
-import axios from "axios";
+import axios, { CancelToken } from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Track from "../components/Track";
 import Artists from "../components/Artists";
 import Playlists from "../components/Playlists";
+import Albums from "../components/Albums";
 
 const SearchPage = () => {
-  const { id } = useParams();
+  const { searchQuery } = useParams();
   const { accessToken } = useGlobalContext();
   const [searchResults, setSearchResults] = useState(null);
+  const [nextUrl, setNextUrl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("track");
+  const bottomEl = useRef();
+  const cancelToken = useRef();
 
-  const getSearchResults = async () => {
+  const getSearchResults = async (
+    url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${selectedFilter}`
+  ) => {
+    if (cancelToken.current) {
+      cancelToken.current.cancel("canceled");
+    }
+
+    cancelToken.current = axios.CancelToken.source();
+
     try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/search?q=${id}&type=${selectedFilter}`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-      console.log(
-        `https://api.spotify.com/v1/search?q=${id}&type=${selectedFilter}`,
-        response.data[selectedFilter + "s"].items,
-        selectedFilter
-      );
-      setSearchResults(response.data[selectedFilter + "s"].items);
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cancelToken: cancelToken.current.token,
+      });
+      setNextUrl(response.data[selectedFilter + "s"].next);
+      setSearchResults((prev) => [
+        ...prev,
+        ...response.data[selectedFilter + "s"].items,
+      ]);
     } catch (error) {
-      console.log(error);
+      if (axios.isCancel(error)) {
+        // Request was canceled, do nothing
+      } else {
+        console.log(error);
+      }
     }
   };
 
-  useEffect(() => {
-    console.log("use effect called");
-    if (!id) return;
-    getSearchResults();
-  }, [id, selectedFilter]);
+  console.log(searchResults);
 
-  if (!id) return <Wrapper></Wrapper>;
+  useEffect(() => {
+    if (!searchQuery) return;
+
+    setSearchResults([]);
+
+    getSearchResults();
+  }, [searchQuery, selectedFilter]);
+
+  if (!searchQuery) return <Wrapper></Wrapper>;
 
   return (
     <Wrapper>
-      <div className="container">
+      <div
+        className="container"
+        onScroll={(e) => {
+          const bottom = bottomEl.current.getBoundingClientRect();
+          if (bottom.y < e.target.offsetHeight + 100) {
+            getSearchResults(nextUrl);
+          }
+        }}
+      >
         <div className="filter-container">
           <input
             type="radio"
@@ -83,23 +110,17 @@ const SearchPage = () => {
             onChange={(e) => setSelectedFilter(e.target.value)}
           />
           <label htmlFor="Albums">Albums</label>
-
-          <input
-            type="radio"
-            name="filter"
-            id="Shows"
-            value="show"
-            checked={selectedFilter === "show"}
-            onChange={(e) => setSelectedFilter(e.target.value)}
-          />
-          <label htmlFor="Shows">Shows</label>
         </div>
         <div className="main-content">
-          {selectedFilter === "artist" && searchResults[0].type === "artist" ? (
+          {selectedFilter === "artist" &&
+          searchResults[0]?.type === "artist" ? (
             <Artists artists={searchResults} />
           ) : selectedFilter === "playlist" &&
-            searchResults[0].type === "playlist" ? (
+            searchResults[0]?.type === "playlist" ? (
             <Playlists playlists={searchResults} />
+          ) : selectedFilter === "album" &&
+            searchResults[0]?.type === "album" ? (
+            <Albums albums={searchResults} />
           ) : (
             searchResults?.map((item, index) => {
               return (
@@ -116,6 +137,7 @@ const SearchPage = () => {
             })
           )}
         </div>
+        <span ref={bottomEl}></span>
       </div>
     </Wrapper>
   );
@@ -123,7 +145,7 @@ const SearchPage = () => {
 
 const Wrapper = styled.section`
   background-color: var(--black);
-  height: calc(100vh - 11rem);
+  height: calc(100vh - 11.5rem);
   padding: 1rem 2rem;
   color: var(--white);
   grid-column: 2/ 3;
