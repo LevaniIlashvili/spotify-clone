@@ -65,7 +65,8 @@ const SearchPage = () => {
         className="container"
         onScroll={(e) => {
           const bottom = bottomEl.current.getBoundingClientRect();
-          if (bottom.y < e.target.offsetHeight + 100) {
+          console.log(bottom.y, e.target.offsetHeight);
+          if (bottom.y < e.target.offsetHeight + 300) {
             getSearchResults(nextUrl);
           }
         }}

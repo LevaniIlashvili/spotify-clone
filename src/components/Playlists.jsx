@@ -7,8 +7,6 @@ const Playlists = ({ playlists, display }) => {
   return (
     <Wrapper className={display}>
       {playlists.map((playlist) => {
-        console.log(playlist);
-
         return (
           <div
             onClick={() => navigate(`/playlist/${playlist.id}`)}
