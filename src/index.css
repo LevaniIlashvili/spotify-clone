@@ -46,3 +46,26 @@ body {
 .animated-btn:active {
   transform: scale(1);
 }
+
+/*styles react contextmenu library */
+
+.react-contextmenu {
+  width: 15rem;
+  background-color: #282828;
+  color: var(--white);
+  font-size: 1.4rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+}
+
+.react-contextmenu-item {
+  padding: 1rem;
+  border-radius: 2px;
+}
+
+.react-contextmenu-item:hover {
+  background-color: hsla(0, 0%, 100%, 0.1);
+  cursor: default;
+}

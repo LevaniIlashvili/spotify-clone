@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { GoHomeFill } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
@@ -9,6 +9,7 @@ import { BsMusicNoteBeamed } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import SortDropdown from "./SortDropdown";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -19,6 +20,7 @@ const Sidebar = () => {
     isSidebarOpen,
     setIsSidebarOpen,
     currentTrack,
+    user,
   } = useGlobalContext();
 
   const location = useLocation();
@@ -111,72 +113,98 @@ const Sidebar = () => {
           <BsPlusLg />
         </button>
       </div>
-      <ul className="library">
-        <li className="filter-container">
-          <div className="search-container">
-            <button
-              className="btn search-btn playlist-search-btn"
-              onClick={() => setIsSearchOpen(true)}
-            >
-              <FiSearch />
-            </button>
-            <input
-              placeholder="Search in Your Library"
-              type="search"
-              className={`playlist-search-input ${
-                !isSearchOpen ? "hidden" : ""
-              }`}
-              onChange={({ target }) => setPlaylistFilterText(target.value)}
-              value={playlistFilterText}
-            />
-            <MdClear
-              className={`playlist-clear-btn ${!isSearchOpen ? "hidden" : ""}`}
-              onClick={() => setPlaylistFilterText("")}
-            />
-          </div>
-          <SortDropdown />
-        </li>
-        {filteredPlaylists.map((playlist) => {
-          return (
-            <li key={playlist.id}>
-              <Link
-                to={`/playlist/${playlist.id}`}
-                className={`playlist ${
-                  location.pathname.split("/")[1] === "playlist" &&
-                  location.pathname.split("/")[2] === playlist.id
-                    ? "selected"
-                    : ""
-                }`}
+      <ContextMenuTrigger id="library">
+        <ul className="library">
+          <li className="filter-container">
+            <div className="search-container">
+              <button
+                className="btn search-btn playlist-search-btn"
+                onClick={() => setIsSearchOpen(true)}
               >
-                {playlist.images[0]?.url ? (
-                  <img src={playlist.images[0].url} className="playlist-img" />
-                ) : (
-                  <div className="stock-img">
-                    <BsMusicNoteBeamed />
-                  </div>
-                )}
-                <div>
-                  <p
-                    className={`name ${
-                      currentTrack?.playingFrom.type === "playlist" &&
-                      currentTrack?.playingFrom.id === playlist.id
-                        ? "currently-playing"
-                        : ""
-                    }`}
-                  >
-                    {playlist.name}
-                  </p>
-                  <p className="type-owner">
-                    {playlist.type.charAt(0).toUpperCase() +
-                      playlist.type.slice(1)}{" "}
-                    • {playlist.owner.display_name}
-                  </p>
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                <FiSearch />
+              </button>
+              <input
+                placeholder="Search in Your Library"
+                type="search"
+                className={`playlist-search-input ${
+                  !isSearchOpen ? "hidden" : ""
+                }`}
+                onChange={({ target }) => setPlaylistFilterText(target.value)}
+                value={playlistFilterText}
+              />
+              <MdClear
+                className={`playlist-clear-btn ${
+                  !isSearchOpen ? "hidden" : ""
+                }`}
+                onClick={() => setPlaylistFilterText("")}
+              />
+            </div>
+            <SortDropdown />
+          </li>
+          {filteredPlaylists.map((playlist) => {
+            return (
+              <React.Fragment key={playlist.id}>
+                <ContextMenuTrigger id={playlist.id}>
+                  <li>
+                    <Link
+                      to={`/playlist/${playlist.id}`}
+                      className={`playlist ${
+                        location.pathname.split("/")[1] === "playlist" &&
+                        location.pathname.split("/")[2] === playlist.id
+                          ? "selected"
+                          : ""
+                      }`}
+                    >
+                      {playlist.images[0]?.url ? (
+                        <img
+                          src={playlist.images[0].url}
+                          className="playlist-img"
+                        />
+                      ) : (
+                        <div className="stock-img">
+                          <BsMusicNoteBeamed />
+                        </div>
+                      )}
+                      <div>
+                        <p
+                          className={`name ${
+                            currentTrack?.playingFrom.type === "playlist" &&
+                            currentTrack?.playingFrom.id === playlist.id
+                              ? "currently-playing"
+                              : ""
+                          }`}
+                        >
+                          {playlist.name}
+                        </p>
+                        <p className="type-owner">
+                          {playlist.type.charAt(0).toUpperCase() +
+                            playlist.type.slice(1)}{" "}
+                          • {playlist.owner.display_name}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                </ContextMenuTrigger>
+                <ContextMenu id={playlist.id}>
+                  <MenuItem data={{ action: "create playlist" }}>
+                    Create playlist
+                  </MenuItem>
+                  {playlist.owner.id === user.id && (
+                    <MenuItem data={{ action: "edit playlist details" }}>
+                      Edit details
+                    </MenuItem>
+                  )}
+                </ContextMenu>
+              </React.Fragment>
+            );
+          })}
+        </ul>
+      </ContextMenuTrigger>
+      <ContextMenu id="library">
+        <MenuItem data={{ action: "create-playlist" }}>
+          Create playlist
+        </MenuItem>
+      </ContextMenu>
     </Wrapper>
   );
 };
