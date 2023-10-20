@@ -1,56 +1,30 @@
 import styled from "styled-components";
-import { useGlobalContext } from "../context";
 import { MdClear } from "react-icons/md";
-import { useRef, useState } from "react";
-import axios from "axios";
+import { useRef } from "react";
 
-const CreatePlaylistModal = () => {
-  const {
-    accessToken,
-    isPlaylistModalOpen,
-    setIsPlaylistModalOpen,
-    user,
-    setUserPlaylists,
-  } = useGlobalContext();
+const PlaylistModal = ({
+  isModalOpen,
+  closeModal,
+  modalHeader,
+  modalBtnText,
+  name,
+  description,
+  setName,
+  setDescription,
+  handleSubmit,
+}) => {
   const outsideModal = useRef();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  const createPlaylist = async () => {
-    try {
-      const response = await axios.post(
-        `https://api.spotify.com/v1/users/${user.id}/playlists`,
-        {
-          name,
-          description,
-        },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      setUserPlaylists((prev) => [...prev, response.data]);
-      setIsPlaylistModalOpen(false);
-      setName("");
-      setDescription("");
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Wrapper
-      className={`${isPlaylistModalOpen ? "" : "hidden"}`}
+      className={`${isModalOpen ? "" : "hidden"}`}
       ref={outsideModal}
-      onClick={(e) =>
-        e.target === outsideModal.current && setIsPlaylistModalOpen(false)
-      }
+      onClick={(e) => e.target === outsideModal.current && closeModal()}
     >
       <div className="modal-window">
         <div className="top-container">
-          <h2>Create a playlist</h2>
-          <button
-            className="clear-btn"
-            onClick={() => setIsPlaylistModalOpen(false)}
-          >
+          <h2>{modalHeader}</h2>
+          <button className="clear-btn" onClick={() => closeModal()}>
             <MdClear />
           </button>
         </div>
@@ -79,11 +53,8 @@ const CreatePlaylistModal = () => {
             Description
           </label>
         </div>
-        <button
-          className="animated-btn create-playlist-btn"
-          onClick={createPlaylist}
-        >
-          Create
+        <button className="animated-btn playlist-btn" onClick={handleSubmit}>
+          {modalBtnText}
         </button>
       </div>
     </Wrapper>
@@ -188,7 +159,7 @@ const Wrapper = styled.section`
     opacity: 100;
   }
 
-  .create-playlist-btn {
+  .playlist-btn {
     align-self: flex-end;
     border: none;
     cursor: pointer;
@@ -200,9 +171,9 @@ const Wrapper = styled.section`
     font-weight: 600;
   }
 
-  .create-playlist-btn:active {
+  .playlist-btn:active {
     background-color: #b6b6b6;
   }
 `;
 
-export default CreatePlaylistModal;
+export default PlaylistModal;

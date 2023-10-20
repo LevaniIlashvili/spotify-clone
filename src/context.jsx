@@ -15,7 +15,8 @@ import {
   SET_IS_MUTED,
   SET_IS_SIDEBAR_OPEN,
   SET_NAVBAR_CONTENT,
-  SET_IS_PLAYLIST_MODAL_OPEN,
+  SET_IS_CREATE_PLAYLIST_MODAL_OPEN,
+  SET_IS_EDIT_PLAYLIST_MODAL_OPEN,
 } from "./actions";
 
 const initialState = {
@@ -33,7 +34,8 @@ const initialState = {
   filteredPlaylists: [],
   isSidebarOpen: true,
   navbarContent: "",
-  isAddPlaylistModalOpen: false,
+  isCreatePlaylistModalOpen: false,
+  isEditPlaylistModalOpen: { open: false, playlist: null },
 };
 
 const AppContext = createContext();
@@ -58,15 +60,21 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const setUserPlaylists = async () => {
-    try {
-      const { data } = await axios.get(
-        "https://api.spotify.com/v1/me/playlists",
-        { headers }
-      );
-      dispatch({ type: SET_USER_PLAYLISTS, payload: data.items });
-    } catch (error) {
-      console.log(error);
+  const setUserPlaylists = async (playlists) => {
+    console.log(playlists);
+    if (playlists) {
+      dispatch({ type: SET_USER_PLAYLISTS, payload: playlists });
+    } else {
+      try {
+        const { data } = await axios.get(
+          "https://api.spotify.com/v1/me/playlists",
+          { headers }
+        );
+        console.log(data.items);
+        dispatch({ type: SET_USER_PLAYLISTS, payload: data.items });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -120,8 +128,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_NAVBAR_CONTENT, payload: content });
   };
 
-  const setIsPlaylistModalOpen = (boolean) => {
-    dispatch({ type: SET_IS_PLAYLIST_MODAL_OPEN, payload: boolean });
+  const setIsCreatePlaylistModalOpen = (boolean) => {
+    dispatch({ type: SET_IS_CREATE_PLAYLIST_MODAL_OPEN, payload: boolean });
+  };
+
+  const setIsEditPlaylistModalOpen = (object) => {
+    dispatch({ type: SET_IS_EDIT_PLAYLIST_MODAL_OPEN, payload: object });
   };
 
   // for search page
@@ -161,7 +173,8 @@ const AppProvider = ({ children }) => {
         setIsMuted,
         setIsSidebarOpen,
         setNavbarContent,
-        setIsPlaylistModalOpen,
+        setIsCreatePlaylistModalOpen,
+        setIsEditPlaylistModalOpen,
       }}
     >
       {children}

@@ -12,7 +12,8 @@ import TrackPage from "./pages/TrackPage";
 import AlbumPage from "./pages/AlbumPage";
 import ArtistPage from "./pages/ArtistPage";
 import SearchPage from "./pages/SearchPage";
-import CreatePlaylistModal from "./components/CreatePlaylistModal";
+import CreatePlaylistModal from "./components/playlistModal/CreatePlaylistModal";
+import EditPlaylistModal from "./components/playlistModal/EditPlaylistModal";
 
 const App = () => {
   const {
@@ -74,6 +75,7 @@ const App = () => {
         <Navbar />
         <Sidebar />
         <CreatePlaylistModal />
+        <EditPlaylistModal />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route

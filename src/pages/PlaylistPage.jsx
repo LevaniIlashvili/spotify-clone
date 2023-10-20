@@ -91,7 +91,7 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
           {},
           { headers: { Authorization: `Bearer ${accessToken}` } }
         );
-        setUserPlaylists([...userPlaylists, currentPlaylist]);
+        setUserPlaylists([currentPlaylist, ...userPlaylists]);
       }
     } catch (error) {
       console.log(error);

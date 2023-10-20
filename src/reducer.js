@@ -12,7 +12,8 @@ import {
   SET_IS_MUTED,
   SET_IS_SIDEBAR_OPEN,
   SET_NAVBAR_CONTENT,
-  SET_IS_PLAYLIST_MODAL_OPEN,
+  SET_IS_CREATE_PLAYLIST_MODAL_OPEN,
+  SET_IS_EDIT_PLAYLIST_MODAL_OPEN,
 } from "./actions";
 
 const reducer = (state, action) => {
@@ -86,8 +87,10 @@ const reducer = (state, action) => {
       return { ...state, isSidebarOpen: action.payload };
     case SET_NAVBAR_CONTENT:
       return { ...state, navbarContent: action.payload };
-    case SET_IS_PLAYLIST_MODAL_OPEN:
-      return { ...state, isPlaylistModalOpen: action.payload };
+    case SET_IS_CREATE_PLAYLIST_MODAL_OPEN:
+      return { ...state, isCreatePlaylistModalOpen: action.payload };
+    case SET_IS_EDIT_PLAYLIST_MODAL_OPEN:
+      return { ...state, isEditPlaylistModalOpen: action.payload };
     default:
       return state;
   }

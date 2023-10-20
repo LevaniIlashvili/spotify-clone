@@ -21,7 +21,8 @@ const Sidebar = () => {
     setIsSidebarOpen,
     currentTrack,
     user,
-    setIsPlaylistModalOpen,
+    setIsCreatePlaylistModalOpen,
+    setIsEditPlaylistModalOpen,
   } = useGlobalContext();
 
   const location = useLocation();
@@ -112,7 +113,7 @@ const Sidebar = () => {
         </button>
         <button
           className="btn plus-icon"
-          onClick={() => setIsPlaylistModalOpen(true)}
+          onClick={() => setIsCreatePlaylistModalOpen(true)}
         >
           <BsPlusLg />
         </button>
@@ -192,12 +193,20 @@ const Sidebar = () => {
                 <ContextMenu id={playlist.id}>
                   <MenuItem
                     data={{ action: "create playlist" }}
-                    onClick={() => setIsPlaylistModalOpen(true)}
+                    onClick={() => setIsCreatePlaylistModalOpen(true)}
                   >
                     Create playlist
                   </MenuItem>
                   {playlist.owner.id === user.id && (
-                    <MenuItem data={{ action: "edit playlist details" }}>
+                    <MenuItem
+                      data={{ action: "edit playlist details" }}
+                      onClick={() =>
+                        setIsEditPlaylistModalOpen({
+                          open: true,
+                          playlist,
+                        })
+                      }
+                    >
                       Edit details
                     </MenuItem>
                   )}
@@ -210,7 +219,7 @@ const Sidebar = () => {
       <ContextMenu id="library">
         <MenuItem
           data={{ action: "create-playlist" }}
-          onClick={() => setIsPlaylistModalOpen(true)}
+          onClick={() => setIsCreatePlaylistModalOpen(true)}
         >
           Create playlist
         </MenuItem>
