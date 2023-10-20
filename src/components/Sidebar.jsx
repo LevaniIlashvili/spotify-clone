@@ -21,6 +21,7 @@ const Sidebar = () => {
     setIsSidebarOpen,
     currentTrack,
     user,
+    setIsPlaylistModalOpen,
   } = useGlobalContext();
 
   const location = useLocation();
@@ -109,7 +110,10 @@ const Sidebar = () => {
           <VscLibrary className="library-icon" />
           <p>Your Library</p>
         </button>
-        <button className="btn plus-icon">
+        <button
+          className="btn plus-icon"
+          onClick={() => setIsPlaylistModalOpen(true)}
+        >
           <BsPlusLg />
         </button>
       </div>
@@ -186,7 +190,10 @@ const Sidebar = () => {
                   </li>
                 </ContextMenuTrigger>
                 <ContextMenu id={playlist.id}>
-                  <MenuItem data={{ action: "create playlist" }}>
+                  <MenuItem
+                    data={{ action: "create playlist" }}
+                    onClick={() => setIsPlaylistModalOpen(true)}
+                  >
                     Create playlist
                   </MenuItem>
                   {playlist.owner.id === user.id && (
@@ -201,7 +208,10 @@ const Sidebar = () => {
         </ul>
       </ContextMenuTrigger>
       <ContextMenu id="library">
-        <MenuItem data={{ action: "create-playlist" }}>
+        <MenuItem
+          data={{ action: "create-playlist" }}
+          onClick={() => setIsPlaylistModalOpen(true)}
+        >
           Create playlist
         </MenuItem>
       </ContextMenu>

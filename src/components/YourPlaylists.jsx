@@ -18,7 +18,7 @@ const YourPlaylists = () => {
               className="item"
               key={playlist.id}
             >
-              <img src={playlist.images[1].url} alt="item image" />
+              <img src={playlist.images[1]?.url} alt="item image" />
               <div>
                 <h4>{playlist.name}</h4>
                 <p>By {playlist.owner.display_name}</p>

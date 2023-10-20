@@ -12,6 +12,7 @@ import TrackPage from "./pages/TrackPage";
 import AlbumPage from "./pages/AlbumPage";
 import ArtistPage from "./pages/ArtistPage";
 import SearchPage from "./pages/SearchPage";
+import CreatePlaylistModal from "./components/CreatePlaylistModal";
 
 const App = () => {
   const {
@@ -72,6 +73,7 @@ const App = () => {
       <Router>
         <Navbar />
         <Sidebar />
+        <CreatePlaylistModal />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route

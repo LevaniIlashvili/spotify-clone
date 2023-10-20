@@ -15,6 +15,7 @@ import {
   SET_IS_MUTED,
   SET_IS_SIDEBAR_OPEN,
   SET_NAVBAR_CONTENT,
+  SET_IS_PLAYLIST_MODAL_OPEN,
 } from "./actions";
 
 const initialState = {
@@ -32,6 +33,7 @@ const initialState = {
   filteredPlaylists: [],
   isSidebarOpen: true,
   navbarContent: "",
+  isAddPlaylistModalOpen: false,
 };
 
 const AppContext = createContext();
@@ -118,6 +120,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_NAVBAR_CONTENT, payload: content });
   };
 
+  const setIsPlaylistModalOpen = (boolean) => {
+    dispatch({ type: SET_IS_PLAYLIST_MODAL_OPEN, payload: boolean });
+  };
+
   // for search page
   const getCategories = async () => {
     try {
@@ -155,6 +161,7 @@ const AppProvider = ({ children }) => {
         setIsMuted,
         setIsSidebarOpen,
         setNavbarContent,
+        setIsPlaylistModalOpen,
       }}
     >
       {children}
