@@ -152,32 +152,34 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
           </span>
         </Hero>
         <div className="playlist-options-container">
-          <button
-            ref={playBtnRef}
-            type="button"
-            className="start-playlist-btn animated-btn"
-            onClick={() => {
-              if (currentTrack?.playingFrom?.id !== currentPlaylist.id) {
-                setQueue(
-                  currentPlaylist.tracks.items.map((item) => item.track)
-                );
-                setCurrentTrack({
-                  ...currentPlaylist.tracks.items[0].track,
-                  playingFrom: { type: "playlist", id: currentPlaylist.id },
-                });
-                setIsTrackPlaying(true);
-              } else {
-                setIsTrackPlaying(!isTrackPlaying);
-              }
-            }}
-          >
-            {isTrackPlaying &&
-            currentTrack?.playingFrom?.id === currentPlaylist.id ? (
-              <BsPauseFill className="play-icon" />
-            ) : (
-              <BsPlayFill className="play-icon" />
-            )}
-          </button>
+          {currentPlaylist.tracks.items[0] && (
+            <button
+              ref={playBtnRef}
+              type="button"
+              className="start-playlist-btn animated-btn"
+              onClick={() => {
+                if (currentTrack?.playingFrom?.id !== currentPlaylist.id) {
+                  setQueue(
+                    currentPlaylist.tracks.items.map((item) => item.track)
+                  );
+                  setCurrentTrack({
+                    ...currentPlaylist.tracks.items[0].track,
+                    playingFrom: { type: "playlist", id: currentPlaylist.id },
+                  });
+                  setIsTrackPlaying(true);
+                } else {
+                  setIsTrackPlaying(!isTrackPlaying);
+                }
+              }}
+            >
+              {isTrackPlaying &&
+              currentTrack?.playingFrom?.id === currentPlaylist.id ? (
+                <BsPauseFill className="play-icon" />
+              ) : (
+                <BsPlayFill className="play-icon" />
+              )}
+            </button>
+          )}
           {currentPlaylist.owner.id !== user.id && (
             <button
               className="playlist-follow-btn animated-btn"
