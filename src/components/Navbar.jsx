@@ -14,11 +14,11 @@ const Navbar = () => {
   return (
     <Wrapper>
       <div className="left-side">
-        <button className="btn back-btn">
+        <button className="btn back-btn" onClick={() => window.history.back()}>
           <IoIosArrowBack />
         </button>
         <button className="btn forward-btn">
-          <IoIosArrowForward />
+          <IoIosArrowForward onClick={() => window.history.forward()} />
         </button>
         <h3 className="navbar-content">{navbarContent}</h3>
         {location.pathname.split("/")[1] === "search" && (
