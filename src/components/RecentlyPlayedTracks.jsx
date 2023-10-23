@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import UserContentSection from "./UserContentSection";
-import TrackContextMenu from "./TrackContextMenu";
+import TrackContextMenu from "./contextMenus/TrackContextMenu";
 
 const RecentlyPlayedTracks = () => {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import UserContentSection from "./UserContentSection";
+import TrackContextMenu from "./contextMenus/TrackContextMenu";
 
 const YourTopTracks = () => {
   const navigate = useNavigate();
@@ -14,16 +15,20 @@ const YourTopTracks = () => {
         if (!track) return null;
 
         return (
-          <div
-            onClick={() => navigate(`/track/${track.id}`)}
-            className="item"
-            key={track.id}
-          >
-            <img src={track.album.images[1].url} alt="item image" />
-            <div>
-              <h4>{track.name}</h4>
-              <p>{track.artists[0].name}</p>
-            </div>
+          <div className="item-container">
+            <TrackContextMenu track={track}>
+              <div
+                onClick={() => navigate(`/track/${track.id}`)}
+                className="item"
+                key={track.id}
+              >
+                <img src={track.album.images[1].url} alt="item image" />
+                <div>
+                  <h4>{track.name}</h4>
+                  <p>{track.artists[0].name}</p>
+                </div>
+              </div>
+            </TrackContextMenu>
           </div>
         );
       }}

@@ -5,7 +5,7 @@ import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import TrackHeart from "./TrackHeart";
 import { useGlobalContext } from "../context";
 import { Link } from "react-router-dom";
-import TrackContextMenu from "./TrackContextMenu";
+import TrackContextMenu from "./contextMenus/TrackContextMenu";
 
 const Track = ({ playingFrom, track, index, addedAt, queue }) => {
   const [isHovered, setIsHovered] = useState(false);

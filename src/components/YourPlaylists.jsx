@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import UserContentSection from "./UserContentSection";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
+import PlaylistContextMenu from "./contextMenus/PlaylistContextMenu";
 
 const YourPlaylists = () => {
   const { user, userPlaylists, setIsEditPlaylistModalOpen } =
@@ -16,7 +17,10 @@ const YourPlaylists = () => {
         itemRenderer={(playlist) => {
           return (
             <div key={playlist.id} className="item-container">
-              <ContextMenuTrigger id={`your-playlists-${playlist.id}`}>
+              <PlaylistContextMenu
+                playlist={playlist}
+                renderedIn="your-playlists-section"
+              >
                 <div
                   onClick={() => navigate(`/playlist/${playlist.id}`)}
                   className="item"
@@ -27,22 +31,7 @@ const YourPlaylists = () => {
                     <p>By {playlist.owner.display_name}</p>
                   </div>
                 </div>
-              </ContextMenuTrigger>
-              <ContextMenu id={`your-playlists-${playlist.id}`}>
-                {playlist.owner.id === user.id && (
-                  <MenuItem
-                    data={{ action: "edit playlist details" }}
-                    onClick={() =>
-                      setIsEditPlaylistModalOpen({
-                        open: true,
-                        playlist,
-                      })
-                    }
-                  >
-                    Edit details
-                  </MenuItem>
-                )}
-              </ContextMenu>
+              </PlaylistContextMenu>
             </div>
           );
         }}

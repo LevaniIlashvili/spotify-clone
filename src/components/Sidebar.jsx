@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { GoHomeFill } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
@@ -10,6 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import SortDropdown from "./SortDropdown";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import PlaylistContextMenu from "./contextMenus/PlaylistContextMenu";
 
 const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -20,9 +21,7 @@ const Sidebar = () => {
     isSidebarOpen,
     setIsSidebarOpen,
     currentTrack,
-    user,
     setIsCreatePlaylistModalOpen,
-    setIsEditPlaylistModalOpen,
   } = useGlobalContext();
 
   const location = useLocation();
@@ -64,40 +63,23 @@ const Sidebar = () => {
             {filteredPlaylists.map((playlist) => {
               console.log(playlist);
               return (
-                <React.Fragment key={playlist.id}>
-                  <ContextMenuTrigger id={playlist.id}>
-                    <li className="playlist">
-                      <Link to={`playlist/${playlist.id}`}>
-                        {playlist.images[0]?.url ? (
-                          <img src={playlist.images[0].url} />
-                        ) : (
-                          <div className="stock-img">
-                            <BsMusicNoteBeamed />
-                          </div>
-                        )}
-                      </Link>
-                    </li>
-                  </ContextMenuTrigger>
-                  <ContextMenu id={playlist.id}>
-                    <MenuItem
-                      onClick={() => setIsCreatePlaylistModalOpen(true)}
-                    >
-                      Create playlist
-                    </MenuItem>
-                    {playlist.owner.id === user.id && (
-                      <MenuItem
-                        onClick={() =>
-                          setIsEditPlaylistModalOpen({
-                            open: true,
-                            playlist,
-                          })
-                        }
-                      >
-                        Edit details
-                      </MenuItem>
-                    )}
-                  </ContextMenu>
-                </React.Fragment>
+                <PlaylistContextMenu
+                  key={playlist.id}
+                  playlist={playlist}
+                  renderedIn={"sidebar-shrinked"}
+                >
+                  <li className="playlist">
+                    <Link to={`playlist/${playlist.id}`}>
+                      {playlist.images[0]?.url ? (
+                        <img src={playlist.images[0].url} />
+                      ) : (
+                        <div className="stock-img">
+                          <BsMusicNoteBeamed />
+                        </div>
+                      )}
+                    </Link>
+                  </li>
+                </PlaylistContextMenu>
               );
             })}
           </ul>
@@ -181,70 +163,51 @@ const Sidebar = () => {
           </li>
           {filteredPlaylists.map((playlist) => {
             return (
-              <React.Fragment key={playlist.id}>
-                <ContextMenuTrigger id={playlist.id}>
-                  <li>
-                    <Link
-                      to={`/playlist/${playlist.id}`}
-                      className={`playlist ${
-                        location.pathname.split("/")[1] === "playlist" &&
-                        location.pathname.split("/")[2] === playlist.id
-                          ? "selected"
-                          : ""
-                      }`}
-                    >
-                      {playlist.images[0]?.url ? (
-                        <img
-                          src={playlist.images[0].url}
-                          className="playlist-img"
-                        />
-                      ) : (
-                        <div className="stock-img">
-                          <BsMusicNoteBeamed />
-                        </div>
-                      )}
-                      <div>
-                        <p
-                          className={`name ${
-                            currentTrack?.playingFrom.type === "playlist" &&
-                            currentTrack?.playingFrom.id === playlist.id
-                              ? "currently-playing"
-                              : ""
-                          }`}
-                        >
-                          {playlist.name}
-                        </p>
-                        <p className="type-owner">
-                          {playlist.type.charAt(0).toUpperCase() +
-                            playlist.type.slice(1)}{" "}
-                          • {playlist.owner.display_name}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                </ContextMenuTrigger>
-                <ContextMenu id={playlist.id}>
-                  <MenuItem
-                    data={{ action: "create playlist" }}
-                    onClick={() => setIsCreatePlaylistModalOpen(true)}
+              <PlaylistContextMenu
+                playlist={playlist}
+                renderedIn="sidebar"
+                key={playlist.id}
+              >
+                <li>
+                  <Link
+                    to={`/playlist/${playlist.id}`}
+                    className={`playlist ${
+                      location.pathname.split("/")[1] === "playlist" &&
+                      location.pathname.split("/")[2] === playlist.id
+                        ? "selected"
+                        : ""
+                    }`}
                   >
-                    Create playlist
-                  </MenuItem>
-                  {playlist.owner.id === user.id && (
-                    <MenuItem
-                      data={{ action: "edit playlist details" }}
-                      onClick={() =>
-                        setIsEditPlaylistModalOpen({
-                          open: true,
-                          playlist,
-                        })
-                      }
-                    >
-                      Edit details
-                    </MenuItem>
-                  )}
-                </ContextMenu>
-              </React.Fragment>
+                    {playlist.images[0]?.url ? (
+                      <img
+                        src={playlist.images[0].url}
+                        className="playlist-img"
+                      />
+                    ) : (
+                      <div className="stock-img">
+                        <BsMusicNoteBeamed />
+                      </div>
+                    )}
+                    <div>
+                      <p
+                        className={`name ${
+                          currentTrack?.playingFrom.type === "playlist" &&
+                          currentTrack?.playingFrom.id === playlist.id
+                            ? "currently-playing"
+                            : ""
+                        }`}
+                      >
+                        {playlist.name}
+                      </p>
+                      <p className="type-owner">
+                        {playlist.type.charAt(0).toUpperCase() +
+                          playlist.type.slice(1)}{" "}
+                        • {playlist.owner.display_name}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              </PlaylistContextMenu>
             );
           })}
         </ul>

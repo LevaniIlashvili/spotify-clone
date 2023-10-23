@@ -5,7 +5,7 @@ import {
   SubMenu,
   ContextMenu,
 } from "react-contextmenu";
-import { useGlobalContext } from "../context";
+import { useGlobalContext } from "../../context";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ const TrackContextMenu = ({ children, track }) => {
     }
   };
 
-  if (!track) return null;
+  if (!track) return children;
 
   //   console.log(trackId);
 
