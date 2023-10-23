@@ -59,24 +59,57 @@ const Sidebar = () => {
           className="library-icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
-        <ul className="library">
-          {filteredPlaylists.map((playlist) => {
-            console.log(playlist);
-            return (
-              <li key={playlist.id} className="playlist">
-                <Link to={`playlist/${playlist.id}`}>
-                  {playlist.images[0]?.url ? (
-                    <img src={playlist.images[0].url} />
-                  ) : (
-                    <div className="stock-img">
-                      <BsMusicNoteBeamed />
-                    </div>
-                  )}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <ContextMenuTrigger id="library">
+          <ul className="library">
+            {filteredPlaylists.map((playlist) => {
+              console.log(playlist);
+              return (
+                <React.Fragment key={playlist.id}>
+                  <ContextMenuTrigger id={playlist.id}>
+                    <li className="playlist">
+                      <Link to={`playlist/${playlist.id}`}>
+                        {playlist.images[0]?.url ? (
+                          <img src={playlist.images[0].url} />
+                        ) : (
+                          <div className="stock-img">
+                            <BsMusicNoteBeamed />
+                          </div>
+                        )}
+                      </Link>
+                    </li>
+                  </ContextMenuTrigger>
+                  <ContextMenu id={playlist.id}>
+                    <MenuItem
+                      onClick={() => setIsCreatePlaylistModalOpen(true)}
+                    >
+                      Create playlist
+                    </MenuItem>
+                    {playlist.owner.id === user.id && (
+                      <MenuItem
+                        onClick={() =>
+                          setIsEditPlaylistModalOpen({
+                            open: true,
+                            playlist,
+                          })
+                        }
+                      >
+                        Edit details
+                      </MenuItem>
+                    )}
+                  </ContextMenu>
+                </React.Fragment>
+              );
+            })}
+          </ul>
+        </ContextMenuTrigger>
+        <ContextMenu id="library">
+          <MenuItem
+            data={{ action: "create-playlist" }}
+            onClick={() => setIsCreatePlaylistModalOpen(true)}
+          >
+            Create playlist
+          </MenuItem>
+        </ContextMenu>
       </Wrapper2>
     );
   }

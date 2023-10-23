@@ -81,31 +81,31 @@ const Wrapper = styled.section`
   }
 
   @media (max-width: 2010px) {
-    &.limited .item:nth-child(7) {
+    &.limited .item-container:nth-child(7) {
       display: none;
     }
   }
 
   @media (max-width: 1725px) {
-    &.limited .item:nth-child(6) {
+    &.limited .item-container:nth-child(6) {
       display: none;
     }
   }
 
   @media (max-width: 1440px) {
-    &.limited .item:nth-child(5) {
+    &.limited .item-container:nth-child(5) {
       display: none;
     }
   }
 
   @media (max-width: 1155px) {
-    &.limited .item:nth-child(4) {
+    &.limited .item-container:nth-child(4) {
       display: none;
     }
   }
 
   @media (max-width: 925px) {
-    &.limited .item:nth-child(3) {
+    &.limited .item-container:nth-child(3) {
       display: none;
     }
   }

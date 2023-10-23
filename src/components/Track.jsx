@@ -5,6 +5,7 @@ import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import TrackHeart from "./TrackHeart";
 import { useGlobalContext } from "../context";
 import { Link } from "react-router-dom";
+import TrackContextMenu from "./TrackContextMenu";
 
 const Track = ({ playingFrom, track, index, addedAt, queue }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -24,111 +25,115 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
       id: albumId,
     } = {},
     explicit,
-    artists: [{ id: artistId, name: artistName }] = [],
     duration_ms: trackDuration,
   } = track;
 
   return (
-    <Wrapper
-      className="track"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="track-number">
-        <span>
-          {isHovered ? (
-            <button
-              className="play-btn"
-              onClick={() => {
-                if (
-                  currentTrack?.id !== track.id ||
-                  playingFrom.id !== currentTrack?.playingFrom?.id
-                ) {
-                  setCurrentTrack({ ...track, playingFrom });
-                  setQueue(queue);
-                }
-              }}
-            >
-              {isTrackPlaying &&
-              track.id === currentTrack?.id &&
-              playingFrom.id === currentTrack?.playingFrom?.id ? (
-                <BsPauseFill onClick={() => setIsTrackPlaying(false)} />
-              ) : (
-                <BsPlayFill onClick={() => setIsTrackPlaying(true)} />
-              )}
-            </button>
-          ) : (
-            <span
-              className={`track-index ${
+    <TrackContextMenu track={track}>
+      <Wrapper
+        className="track"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="track-number">
+          <span>
+            {isHovered ? (
+              <button
+                className="play-btn"
+                onClick={() => {
+                  if (
+                    currentTrack?.id !== track.id ||
+                    playingFrom.id !== currentTrack?.playingFrom?.id
+                  ) {
+                    setCurrentTrack({ ...track, playingFrom });
+                    setQueue(queue);
+                  }
+                }}
+              >
+                {isTrackPlaying &&
+                track.id === currentTrack?.id &&
+                playingFrom.id === currentTrack?.playingFrom?.id ? (
+                  <BsPauseFill onClick={() => setIsTrackPlaying(false)} />
+                ) : (
+                  <BsPlayFill onClick={() => setIsTrackPlaying(true)} />
+                )}
+              </button>
+            ) : (
+              <span
+                className={`track-index ${
+                  track.id === currentTrack?.id &&
+                  playingFrom.id === currentTrack?.playingFrom?.id
+                    ? "currently-playing"
+                    : ""
+                }`}
+              >
+                {index}
+              </span>
+            )}
+          </span>
+        </div>
+        <div className="track-preview">
+          {playingFrom.type !== "album" && (
+            <img
+              src={albumImageUrl}
+              alt="album image"
+              className="track-album-img"
+            />
+          )}
+          <div className="track-artist-names">
+            <Link
+              to={`/track/${track?.id}`}
+              className={`link track-link ${
                 track.id === currentTrack?.id &&
                 playingFrom.id === currentTrack?.playingFrom?.id
                   ? "currently-playing"
                   : ""
               }`}
             >
-              {index}
-            </span>
-          )}
-        </span>
-      </div>
-      <div className="track-preview">
-        {playingFrom.type !== "album" && (
-          <img
-            src={albumImageUrl}
-            alt="album image"
-            className="track-album-img"
-          />
-        )}
-        <div className="track-artist-names">
-          <Link
-            to={`/track/${track?.id}`}
-            className={`link track-link ${
-              track.id === currentTrack?.id &&
-              playingFrom.id === currentTrack?.playingFrom?.id
-                ? "currently-playing"
-                : ""
-            }`}
-          >
-            {trackName}
-          </Link>
-          <div>
-            {explicit && <span className="explicit">E</span>}
-            <span className="artist-link-container">
-              {(playingFrom.type === "playlist" ||
-                playingFrom.type === "album" ||
-                playingFrom.type === "search") &&
-                track.artists.map((artist, index) => (
-                  <Link
-                    key={artist.id}
-                    to={`/artist/${artist.id}`}
-                    className="link artist-link"
-                  >
-                    {track.artists.length === index + 1
-                      ? artist.name
-                      : `${artist.name}, `}
-                  </Link>
-                ))}
-            </span>
+              {trackName}
+            </Link>
+            <div>
+              {explicit && <span className="explicit">E</span>}
+              <span className="artist-link-container">
+                {(playingFrom.type === "playlist" ||
+                  playingFrom.type === "album" ||
+                  playingFrom.type === "search") &&
+                  track.artists.map((artist, index) => (
+                    <Link
+                      key={artist.id}
+                      to={`/artist/${artist.id}`}
+                      className="link artist-link"
+                    >
+                      {track.artists.length === index + 1
+                        ? artist.name
+                        : `${artist.name}, `}
+                    </Link>
+                  ))}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="album-name">
-        {(playingFrom.type === "playlist" || playingFrom.type === "search") && (
-          <Link to={`/album/${albumId}`} className="link album-link">
-            {albumName}
-          </Link>
-        )}
-      </div>
-      <div className="date-added">
-        {playingFrom.type === "playlist" && <span>{formatDate(addedAt)}</span>}
-      </div>
-      <div className="is-track-liked-and-duration">
-        <span>{isHovered && <TrackHeart track={track} />}</span>
-        <span className="duration">
-          {formatTimeNumbers(trackDuration / 1000)}
-        </span>
-      </div>
-    </Wrapper>
+        <div className="album-name">
+          {(playingFrom.type === "playlist" ||
+            playingFrom.type === "search") && (
+            <Link to={`/album/${albumId}`} className="link album-link">
+              {albumName}
+            </Link>
+          )}
+        </div>
+        <div className="date-added">
+          {playingFrom.type === "playlist" && (
+            <span>{formatDate(addedAt)}</span>
+          )}
+        </div>
+        <div className="is-track-liked-and-duration">
+          <span>{isHovered && <TrackHeart track={track} />}</span>
+          <span className="duration">
+            {formatTimeNumbers(trackDuration / 1000)}
+          </span>
+        </div>
+      </Wrapper>
+    </TrackContextMenu>
   );
 };
 

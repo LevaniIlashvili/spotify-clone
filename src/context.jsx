@@ -78,15 +78,43 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const setUserLikedSongs = async () => {
+  const setUserLikedSongs = async (userLikedSongs) => {
+    if (userLikedSongs) {
+      dispatch({ type: SET_USER_LIKED_SONGS, payload: userLikedSongs });
+    } else {
+      try {
+        const { data } = await axios.get(
+          "https://api.spotify.com/v1/me/tracks?limit=50",
+          {
+            headers,
+          }
+        );
+        dispatch({ type: SET_USER_LIKED_SONGS, payload: data });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const checkIsTrackLiked = (track) => {
+    const likedSongsUris = state.userLikedSongs?.items?.map(
+      (likedSong) => likedSong.track?.uri
+    );
+    return likedSongsUris?.includes(track?.uri);
+  };
+
+  const toggleTrackLiked = async (track, isTrackLiked) => {
     try {
-      const { data } = await axios.get(
-        "https://api.spotify.com/v1/me/tracks?limit=50",
-        {
-          headers,
-        }
-      );
-      dispatch({ type: SET_USER_LIKED_SONGS, payload: data });
+      await axios({
+        method: isTrackLiked ? "delete" : "put",
+        url: `https://api.spotify.com/v1/me/tracks?ids=${track.id}`,
+        headers: {
+          Authorization: `Bearer ${state.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        data: { ids: [track.id] },
+      });
+      setUserLikedSongs();
     } catch (error) {
       console.log(error);
     }
@@ -136,26 +164,6 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_IS_EDIT_PLAYLIST_MODAL_OPEN, payload: object });
   };
 
-  // for search page
-  const getCategories = async () => {
-    try {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/pop/playlists",
-        { headers }
-      );
-      // const response2 = await axios.get(
-      //   `${response.data.categories.items[1].href}`,
-      //   { headers }
-      // );
-      // console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // for search page
-  // getCategories();
-
   return (
     <AppContext.Provider
       value={{
@@ -175,6 +183,8 @@ const AppProvider = ({ children }) => {
         setNavbarContent,
         setIsCreatePlaylistModalOpen,
         setIsEditPlaylistModalOpen,
+        checkIsTrackLiked,
+        toggleTrackLiked,
       }}
     >
       {children}

@@ -1,44 +1,25 @@
 import { useEffect, useState } from "react";
 import { FiHeart } from "react-icons/fi";
 import { useGlobalContext } from "../context";
-import axios from "axios";
 import styled from "styled-components";
 
 const TrackHeart = ({ track }) => {
-  const [isTrackLiked, setIsTrackLiked] = useState(false);
-  const { userLikedSongs, accessToken } = useGlobalContext();
-
-  const likedSongsUris = userLikedSongs?.items?.map(
-    (likedSong) => likedSong.track?.uri
+  const { toggleTrackLiked, checkIsTrackLiked } = useGlobalContext();
+  const [isTrackLiked, setIsTrackLiked] = useState(() =>
+    checkIsTrackLiked(track)
   );
 
-  const toggleTrackLiked = async () => {
-    setIsTrackLiked(!isTrackLiked);
-    try {
-      await axios({
-        method: isTrackLiked ? "delete" : "put",
-        url: `https://api.spotify.com/v1/me/tracks?ids=${track.id}`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        data: { ids: [track.id] },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    if (likedSongsUris?.includes(track?.uri)) {
-      setIsTrackLiked(true);
-    } else {
-      setIsTrackLiked(false);
-    }
-  }, [userLikedSongs, track]);
+    setIsTrackLiked(() => checkIsTrackLiked(track));
+  }, [track]);
 
   return (
-    <Wrapper onClick={toggleTrackLiked}>
+    <Wrapper
+      onClick={() => {
+        setIsTrackLiked(!isTrackLiked);
+        toggleTrackLiked(track, isTrackLiked);
+      }}
+    >
       <FiHeart className={`btn heart-icon ${isTrackLiked && "filled"}`} />
     </Wrapper>
   );
