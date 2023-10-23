@@ -15,12 +15,11 @@ const YourTopTracks = () => {
         if (!track) return null;
 
         return (
-          <div className="item-container">
+          <div className="item-container" key={track.id}>
             <TrackContextMenu track={track}>
               <div
                 onClick={() => navigate(`/track/${track.id}`)}
                 className="item"
-                key={track.id}
               >
                 <img src={track.album.images[1].url} alt="item image" />
                 <div>

@@ -26,11 +26,9 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
     setIsTrackPlaying,
     setQueue,
     user,
-    userPlaylists,
-    setUserPlaylists,
+    checkIfPlaylistIsFollowed,
+    togglePlaylistFollow,
   } = useGlobalContext();
-
-  console.log(currentPlaylist);
 
   const getPlaylist = async () => {
     try {
@@ -56,56 +54,16 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
     }
   };
 
-  const checkIfPlaylistIsFollowed = async () => {
-    if (!id) return;
-    if (user.id !== currentPlaylist?.owner.id) {
-      try {
-        const response = await axios.get(
-          `https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${user.id}`,
-          { headers: { Authorization: `Bearer ${accessToken}` } }
-        );
-        setIsPlaylistFollowed(response.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const toggleFollow = async () => {
-    setIsPlaylistFollowed(!isPlaylistFollowed);
-    try {
-      if (isPlaylistFollowed) {
-        await axios.delete(
-          `https://api.spotify.com/v1/playlists/${id}/followers`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        const updatedPlaylists = userPlaylists.filter(
-          (playlist) => playlist.id !== id
-        );
-        setUserPlaylists(updatedPlaylists);
-      } else {
-        await axios.put(
-          `https://api.spotify.com/v1/playlists/${id}/followers`,
-          {},
-          { headers: { Authorization: `Bearer ${accessToken}` } }
-        );
-        setUserPlaylists([currentPlaylist, ...userPlaylists]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const checkFollow = async () => {
+    const response = await checkIfPlaylistIsFollowed(currentPlaylist);
+    console.log(response);
+    setIsPlaylistFollowed(response);
   };
 
   useEffect(() => {
     setLoading(true);
 
-    const promises = [
-      getPlaylist(),
-      getPlaylistTracks(),
-      checkIfPlaylistIsFollowed(),
-    ];
+    const promises = [getPlaylist(), getPlaylistTracks()];
 
     Promise.all(promises)
       .then(() => {
@@ -121,6 +79,10 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
       container.scrollTop = 0;
     }
   }, [id]);
+
+  useEffect(() => {
+    checkFollow();
+  }, [currentPlaylist]);
 
   if (loading) {
     return <LoadingScreen></LoadingScreen>;
@@ -183,7 +145,10 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
           {currentPlaylist.owner.id !== user.id && (
             <button
               className="playlist-follow-btn animated-btn"
-              onClick={toggleFollow}
+              onClick={() => {
+                togglePlaylistFollow(id, isPlaylistFollowed);
+                setIsPlaylistFollowed(!isPlaylistFollowed);
+              }}
             >
               <FiHeart
                 className={`heart-icon ${isPlaylistFollowed ? "filled" : ""}`}

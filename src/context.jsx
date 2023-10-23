@@ -120,6 +120,94 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const checkIfFollowingArtist = async (id) => {
+    if (!id) return false;
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`,
+        { headers: { Authorization: `Bearer ${state.accessToken}` } }
+      );
+      return response.data[0];
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleArtistFollow = async (id, isFollowing) => {
+    if (!id) return false;
+    try {
+      if (isFollowing) {
+        await axios.delete(
+          "https://api.spotify.com/v1/me/following?type=artist",
+          {
+            data: {
+              ids: [`${id}`],
+            },
+            headers: { Authorization: `Bearer ${state.accessToken}` },
+          }
+        );
+      } else {
+        await axios.put(
+          "https://api.spotify.com/v1/me/following?type=artist",
+          {
+            ids: [`${id}`],
+          },
+          { headers: { Authorization: `Bearer ${state.accessToken}` } }
+        );
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const checkIfPlaylistIsFollowed = async (playlist) => {
+    console.log(playlist);
+    if (!playlist) return;
+    console.log("checking if followed");
+    if (state.user.id !== playlist?.owner.id) {
+      try {
+        const response = await axios.get(
+          `https://api.spotify.com/v1/playlists/${playlist.id}/followers/contains?ids=${state.user.id}`,
+          { headers: { Authorization: `Bearer ${state.accessToken}` } }
+        );
+        return response.data[0];
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const togglePlaylistFollow = async (id, isPlaylistFollowed) => {
+    try {
+      if (isPlaylistFollowed) {
+        await axios.delete(
+          `https://api.spotify.com/v1/playlists/${id}/followers`,
+          {
+            headers: { Authorization: `Bearer ${state.accessToken}` },
+          }
+        );
+        const updatedPlaylists = state.userPlaylists.filter(
+          (playlist) => playlist.id !== id
+        );
+        setUserPlaylists(updatedPlaylists);
+      } else {
+        await axios.put(
+          `https://api.spotify.com/v1/playlists/${id}/followers`,
+          {},
+          { headers: { Authorization: `Bearer ${state.accessToken}` } }
+        );
+        const playlist = await axios.get(
+          `https://api.spotify.com/v1/playlists/${id}`,
+          { headers: { Authorization: `Bearer ${state.accessToken}` } }
+        );
+        const updatedPlaylists = [playlist.data, ...state.userPlaylists];
+        setUserPlaylists(updatedPlaylists);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const setPlaylistSortType = (sortType) => {
     dispatch({ type: SET_PLAYLIST_SORT_TYPE, payload: sortType });
   };
@@ -185,6 +273,10 @@ const AppProvider = ({ children }) => {
         setIsEditPlaylistModalOpen,
         checkIsTrackLiked,
         toggleTrackLiked,
+        checkIfFollowingArtist,
+        toggleArtistFollow,
+        checkIfPlaylistIsFollowed,
+        togglePlaylistFollow,
       }}
     >
       {children}

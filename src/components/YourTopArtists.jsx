@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import UserContentSection from "./UserContentSection";
+import ArtistContextMenu from "./contextMenus/ArtistContextMenu";
 
 const YourTopArtists = () => {
   const navigate = useNavigate();
@@ -14,15 +15,19 @@ const YourTopArtists = () => {
         if (!artist) return null;
 
         return (
-          <div
-            onClick={() => navigate(`/artist/${artist.id}`)}
-            className="item"
-            key={artist.id}
-          >
-            <img src={artist.images[1].url} alt="item image" />
-            <div>
-              <h4>{artist.name}</h4>
-            </div>
+          <div key={artist.id} className="item-container">
+            <ArtistContextMenu artist={artist}>
+              <div
+                onClick={() => navigate(`/artist/${artist.id}`)}
+                className="item"
+                key={artist.id}
+              >
+                <img src={artist.images[1].url} alt="item image" />
+                <div>
+                  <h4>{artist.name}</h4>
+                </div>
+              </div>
+            </ArtistContextMenu>
           </div>
         );
       }}

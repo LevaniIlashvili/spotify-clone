@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import PlaylistContextMenu from "./contextMenus/PlaylistContextMenu";
 
 const Playlists = ({ playlists, display }) => {
   const navigate = useNavigate();
@@ -8,17 +9,22 @@ const Playlists = ({ playlists, display }) => {
     <Wrapper className={display}>
       {playlists.map((playlist) => {
         return (
-          <div
-            onClick={() => navigate(`/playlist/${playlist.id}`)}
+          <PlaylistContextMenu
             key={playlist.id}
-            className="playlist"
+            playlist={playlist}
+            renderedIn="search"
           >
-            <img src={playlist.images[0].url} alt="playlist image" />
-            <div>
-              <h4>{playlist.name}</h4>
-              <p>Playlist</p>
+            <div
+              onClick={() => navigate(`/playlist/${playlist.id}`)}
+              className="playlist"
+            >
+              <img src={playlist.images[0].url} alt="playlist image" />
+              <div>
+                <h4>{playlist.name}</h4>
+                <p>Playlist</p>
+              </div>
             </div>
-          </div>
+          </PlaylistContextMenu>
         );
       })}
     </Wrapper>

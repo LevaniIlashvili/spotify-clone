@@ -1,4 +1,4 @@
-import axios, { CancelToken } from "axios";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalContext } from "../context";

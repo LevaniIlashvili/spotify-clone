@@ -1,8 +1,26 @@
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import { useGlobalContext } from "../../context";
+import { useEffect, useState } from "react";
 
 const PlaylistContextMenu = ({ children, playlist, renderedIn }) => {
-  const { user, setIsEditPlaylistModalOpen } = useGlobalContext();
+  const {
+    user,
+    setIsEditPlaylistModalOpen,
+    checkIfPlaylistIsFollowed,
+    togglePlaylistFollow,
+    userPlaylists,
+    setIsCreatePlaylistModalOpen,
+  } = useGlobalContext();
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  const checkFollow = async () => {
+    const response = await checkIfPlaylistIsFollowed(playlist);
+    setIsFollowed(response);
+  };
+
+  useEffect(() => {
+    checkFollow();
+  }, [playlist, userPlaylists]);
 
   if (!playlist) return children;
 
@@ -12,6 +30,21 @@ const PlaylistContextMenu = ({ children, playlist, renderedIn }) => {
         {children}
       </ContextMenuTrigger>
       <ContextMenu id={`${renderedIn}-${playlist.id}`}>
+        {(renderedIn === "sidebar" || renderedIn === "sidebar-shrinked") && (
+          <MenuItem onClick={() => setIsCreatePlaylistModalOpen(true)}>
+            Create playlist
+          </MenuItem>
+        )}
+        {playlist.owner.id !== user.id && (
+          <MenuItem
+            onClick={() => {
+              togglePlaylistFollow(playlist.id, isFollowed);
+              setIsFollowed(!isFollowed);
+            }}
+          >
+            {isFollowed ? "Unfollow playlist" : "Follow playlist"}
+          </MenuItem>
+        )}
         {playlist.owner.id === user.id && (
           <MenuItem
             onClick={() =>

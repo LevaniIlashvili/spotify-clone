@@ -16,6 +16,8 @@ const ArtistPage = ({ handleNavbarScroll }) => {
     currentTrack,
     setCurrentTrack,
     setQueue,
+    checkIfFollowingArtist,
+    toggleArtistFollow,
   } = useGlobalContext();
   const { id } = useParams();
   const playBtnRef = useRef(null);
@@ -50,55 +52,15 @@ const ArtistPage = ({ handleNavbarScroll }) => {
     }
   };
 
-  const checkIfFollowing = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/me/following/contains?type=artist&ids=${id}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      setIsFollowing(response.data[0]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const toggleFollow = async () => {
-    setIsFollowing(!isFollowing);
-    try {
-      let response;
-      if (isFollowing) {
-        response = await axios.delete(
-          "https://api.spotify.com/v1/me/following?type=artist",
-          {
-            data: {
-              ids: [`${id}`],
-            },
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-      } else {
-        response = await axios.put(
-          "https://api.spotify.com/v1/me/following?type=artist",
-          {
-            ids: [`${id}`],
-          },
-          { headers: { Authorization: `Bearer ${accessToken}` } }
-        );
-      }
-      console.log(response);
-    } catch (error) {
-      console.log(error.response);
-    }
+  const checkFollow = async () => {
+    const response = await checkIfFollowingArtist(artist?.id);
+    setIsFollowing(response);
   };
 
   useEffect(() => {
     setLoading(true);
 
-    const promises = [
-      getArtist(),
-      getArtistPopularTracks(),
-      checkIfFollowing(),
-    ];
+    const promises = [getArtist(), getArtistPopularTracks(), checkFollow()];
 
     Promise.all(promises)
       .then(() => {
@@ -172,7 +134,13 @@ const ArtistPage = ({ handleNavbarScroll }) => {
                 <BsPlayFill className="play-icon" />
               )}
             </button>
-            <button className="follow-btn animated-btn" onClick={toggleFollow}>
+            <button
+              className="follow-btn animated-btn"
+              onClick={() => {
+                toggleArtistFollow(artist.id, isFollowing);
+                setIsFollowing(!isFollowing);
+              }}
+            >
               {isFollowing ? "Following" : "Follow"}
             </button>
           </div>
