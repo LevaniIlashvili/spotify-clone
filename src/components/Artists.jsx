@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
+import ArtistContextMenu from "./contextMenus/ArtistContextMenu";
 
 const Artists = ({ artists, display }) => {
   const navigate = useNavigate();
@@ -9,27 +10,28 @@ const Artists = ({ artists, display }) => {
     <Wrapper className={display}>
       {artists.map((artist) => {
         return (
-          <div
-            className="artist"
-            onClick={() => navigate(`/artist/${artist.id}`)}
-            key={artist.id}
-          >
-            {artist.images[2]?.url ? (
-              <img
-                src={artist.images[2].url}
-                alt="artist image"
-                className="artist-image"
-              />
-            ) : (
-              <div className="stock-image">
-                <AiOutlineUser className="stock-image-icon" />
+          <ArtistContextMenu key={artist.id} artist={artist}>
+            <div
+              className="artist"
+              onClick={() => navigate(`/artist/${artist.id}`)}
+            >
+              {artist.images[2]?.url ? (
+                <img
+                  src={artist.images[2].url}
+                  alt="artist image"
+                  className="artist-image"
+                />
+              ) : (
+                <div className="stock-image">
+                  <AiOutlineUser className="stock-image-icon" />
+                </div>
+              )}
+              <div className="text-container">
+                <h4>{artist.name}</h4>
+                <p>Artist</p>
               </div>
-            )}
-            <div className="text-container">
-              <h4>{artist.name}</h4>
-              <p>Artist</p>
             </div>
-          </div>
+          </ArtistContextMenu>
         );
       })}
     </Wrapper>
