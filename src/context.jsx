@@ -208,6 +208,21 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const handleNavbarScroll = (playBtnRef, content) => {
+    const playBtn = playBtnRef.current;
+    const navbar = document.querySelector("nav");
+    if (playBtn && navbar) {
+      const playBtnPosition = playBtn.getBoundingClientRect();
+      const navbarPosition = navbar.getBoundingClientRect();
+
+      if (navbarPosition.bottom >= playBtnPosition.top) {
+        setNavbarContent(content);
+      } else {
+        setNavbarContent("");
+      }
+    }
+  };
+
   const setPlaylistSortType = (sortType) => {
     dispatch({ type: SET_PLAYLIST_SORT_TYPE, payload: sortType });
   };
@@ -277,6 +292,7 @@ const AppProvider = ({ children }) => {
         toggleArtistFollow,
         checkIfPlaylistIsFollowed,
         togglePlaylistFollow,
+        handleNavbarScroll,
       }}
     >
       {children}

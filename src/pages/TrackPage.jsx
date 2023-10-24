@@ -10,7 +10,7 @@ import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import ArtistPopularTracks from "../components/ArtistPopularTracks";
 import FansAlsoLike from "../components/FansAlsoLike";
 
-const TrackPage = ({ handleNavbarScroll }) => {
+const TrackPage = () => {
   const { id } = useParams();
   const {
     accessToken,
@@ -19,6 +19,7 @@ const TrackPage = ({ handleNavbarScroll }) => {
     isTrackPlaying,
     setIsTrackPlaying,
     setQueue,
+    handleNavbarScroll,
   } = useGlobalContext();
 
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ import { FiHeart } from "react-icons/fi";
 import LoadingScreen from "../components/LoadingScreen";
 import Hero from "../components/Hero";
 
-const PlaylistPage = ({ handleNavbarScroll }) => {
+const PlaylistPage = () => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [currentPlaylistTracks, setCurrentPlaylistTracks] = useState(null);
   const [isPlaylistFollowed, setIsPlaylistFollowed] = useState(false);
@@ -28,6 +28,7 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
     user,
     checkIfPlaylistIsFollowed,
     togglePlaylistFollow,
+    handleNavbarScroll,
   } = useGlobalContext();
 
   const getPlaylist = async () => {

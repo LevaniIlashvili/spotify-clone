@@ -25,7 +25,6 @@ const App = () => {
     setUserLikedSongs,
     setCurrentTrack,
     isSidebarOpen,
-    setNavbarContent,
   } = useGlobalContext();
 
   useEffect(() => {
@@ -42,21 +41,6 @@ const App = () => {
     setUserLikedSongs();
     setCurrentTrack();
   }, [accessToken]);
-
-  const handleNavbarScroll = (playBtnRef, content) => {
-    const playBtn = playBtnRef.current;
-    const navbar = document.querySelector("nav");
-    if (playBtn && navbar) {
-      const playBtnPosition = playBtn.getBoundingClientRect();
-      const navbarPosition = navbar.getBoundingClientRect();
-
-      if (navbarPosition.bottom >= playBtnPosition.top) {
-        setNavbarContent(content);
-      } else {
-        setNavbarContent("");
-      }
-    }
-  };
 
   if (!user) {
     return (
@@ -78,22 +62,10 @@ const App = () => {
         <EditPlaylistModal />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/playlist/:id"
-            element={<PlaylistPage handleNavbarScroll={handleNavbarScroll} />}
-          />
-          <Route
-            path="/track/:id"
-            element={<TrackPage handleNavbarScroll={handleNavbarScroll} />}
-          />
-          <Route
-            path="/album/:id"
-            element={<AlbumPage handleNavbarScroll={handleNavbarScroll} />}
-          />
-          <Route
-            path="/artist/:id"
-            element={<ArtistPage handleNavbarScroll={handleNavbarScroll} />}
-          />
+          <Route path="/playlist/:id" element={<PlaylistPage />} />
+          <Route path="/track/:id" element={<TrackPage />} />
+          <Route path="/album/:id" element={<AlbumPage />} />
+          <Route path="/artist/:id" element={<ArtistPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search/:searchQuery" element={<SearchPage />} />
           {/* <Route path="*" element={<Home />} /> */}

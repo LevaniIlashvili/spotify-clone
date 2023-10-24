@@ -9,7 +9,7 @@ import { formatTimeMixed } from "../helpers";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import Track from "../components/Track";
 
-const AlbumPage = ({ handleNavbarScroll }) => {
+const AlbumPage = () => {
   const { id } = useParams();
   const {
     accessToken,
@@ -18,6 +18,7 @@ const AlbumPage = ({ handleNavbarScroll }) => {
     currentTrack,
     setCurrentTrack,
     setQueue,
+    handleNavbarScroll,
   } = useGlobalContext();
   const playBtnRef = useRef(null);
   const [loading, setLoading] = useState(true);

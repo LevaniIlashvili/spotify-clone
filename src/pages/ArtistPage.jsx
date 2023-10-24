@@ -8,7 +8,7 @@ import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import ArtistPopularTracks from "../components/ArtistPopularTracks";
 import FansAlsoLike from "../components/FansAlsoLike";
 
-const ArtistPage = ({ handleNavbarScroll }) => {
+const ArtistPage = () => {
   const {
     accessToken,
     isTrackPlaying,
@@ -18,6 +18,7 @@ const ArtistPage = ({ handleNavbarScroll }) => {
     setQueue,
     checkIfFollowingArtist,
     toggleArtistFollow,
+    handleNavbarScroll,
   } = useGlobalContext();
   const { id } = useParams();
   const playBtnRef = useRef(null);
