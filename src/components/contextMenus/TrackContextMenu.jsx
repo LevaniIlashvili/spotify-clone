@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ContextMenuTrigger,
   MenuItem,
@@ -8,9 +8,9 @@ import {
 import { useGlobalContext } from "../../context";
 import axios from "axios";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-const TrackContextMenu = ({ children, track }) => {
+const TrackContextMenu = ({ children, track, getPlaylistTracks }) => {
   const {
     userPlaylists,
     user,
@@ -19,9 +19,56 @@ const TrackContextMenu = ({ children, track }) => {
     toggleTrackLiked,
   } = useGlobalContext();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [isPlaylistSubMenuHovered, setIsPlaylistSubMenuHovered] =
     useState(false);
   const [isArtistSubMenuHovered, setIsArtistSubMenuHovered] = useState(false);
+
+  const getPlaylist = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/playlists/${id}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      setCurrentPlaylist(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeTrackFromPlaylist = async () => {
+    try {
+      const response = await axios.delete(
+        `https://api.spotify.com/v1/playlists/${currentPlaylist.id}/tracks`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          data: {
+            tracks: [
+              {
+                uri: `spotify:track:${track.id}`,
+              },
+            ],
+          },
+        }
+      );
+      getPlaylistTracks();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(location.pathname.split("/"));
+    if (location.pathname.split("/")[1] === "playlist") {
+      getPlaylist();
+    }
+  }, []);
 
   const addTrackToPlaylist = async (playlistId) => {
     try {
@@ -43,9 +90,9 @@ const TrackContextMenu = ({ children, track }) => {
     }
   };
 
-  if (!track) return children;
+  // console.log(user.id, currentPlaylist);
 
-  //   console.log(trackId);
+  if (!track) return children;
 
   return (
     <Wrapper>
@@ -76,6 +123,11 @@ const TrackContextMenu = ({ children, track }) => {
             </div>
           </SubMenu>
         </div>
+        {user.id === currentPlaylist?.owner.id && (
+          <MenuItem onClick={() => removeTrackFromPlaylist()}>
+            Remove from this playlist
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => toggleTrackLiked(track, checkIsTrackLiked(track))}
         >

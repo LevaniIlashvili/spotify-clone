@@ -176,6 +176,7 @@ const PlaylistPage = ({ handleNavbarScroll }) => {
                 playingFrom={{ type: "playlist", id: currentPlaylist.id }}
                 queue={currentPlaylist.tracks.items.map((item) => item.track)}
                 addedAt={item.added_at}
+                getPlaylistTracks={getPlaylistTracks}
               />
             );
           })}

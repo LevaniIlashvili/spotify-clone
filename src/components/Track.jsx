@@ -7,7 +7,14 @@ import { useGlobalContext } from "../context";
 import { Link } from "react-router-dom";
 import TrackContextMenu from "./contextMenus/TrackContextMenu";
 
-const Track = ({ playingFrom, track, index, addedAt, queue }) => {
+const Track = ({
+  playingFrom,
+  track,
+  index,
+  addedAt,
+  queue,
+  getPlaylistTracks,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const {
     currentTrack,
@@ -29,7 +36,7 @@ const Track = ({ playingFrom, track, index, addedAt, queue }) => {
   } = track;
 
   return (
-    <TrackContextMenu track={track}>
+    <TrackContextMenu track={track} getPlaylistTracks={getPlaylistTracks}>
       <Wrapper
         className="track"
         onMouseEnter={() => setIsHovered(true)}
