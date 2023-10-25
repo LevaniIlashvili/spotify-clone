@@ -20,7 +20,7 @@ import {
 } from "./actions";
 
 const initialState = {
-  accessToken: "",
+  accessToken: localStorage.getItem("accessToken"),
   user: null,
   currentTrack: "",
   isTrackPlaying: false,

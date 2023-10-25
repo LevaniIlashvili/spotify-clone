@@ -108,12 +108,6 @@ const Wrapper = styled.section`
       display: none;
     }
   }
-
-  /* @media (max-width: 940px) {
-    &.limited .playlist:nth-child(3) {
-      display: none;
-    }
-  } */
 `;
 
 export default Playlists;

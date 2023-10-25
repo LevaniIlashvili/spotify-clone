@@ -148,14 +148,12 @@ const Wrapper = styled.section`
     font-weight: 700;
     top: -8px;
     left: 6px;
-    /* display: none; */
     opacity: 0;
     transition: all 0.2s ease-in;
   }
 
   .name-input:focus + .name-label,
   .description-input:focus + .description-label {
-    /* display: block; */
     opacity: 100;
   }
 

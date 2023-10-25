@@ -67,35 +67,6 @@ const Wrapper = styled.section`
     position: relative;
   }
 
-  /* .name:after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    color: red;
-    top: 0;
-    right: 0;
-    background: linear-gradient(to right, transparent 12.5em, #000000be);
-    z-index: 1;
-  } */
-
-  /* .name {
-    position: relative;
-    animation: marquee 10s linear infinite alternate; 
-  }
-
-  @keyframes name {
-    0%,
-    100% {
-      transform: translateX(100%);
-    }
-    50% {
-      transform: translateX(-100%);
-    }
-  } */
-
-  /* .infod */
-
   .artist {
     font-size: 1.1rem;
     color: var(--gray);

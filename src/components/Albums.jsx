@@ -137,12 +137,6 @@ const Wrapper = styled.section`
       display: none;
     }
   }
-
-  /* @media (max-width: 940px) {
-    &.limited .album:nth-child(3) {
-      display: none;
-    }
-  } */
 `;
 
 export default Albums;

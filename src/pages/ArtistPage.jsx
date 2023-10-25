@@ -203,8 +203,6 @@ const Wrapper = styled.section`
   }
 
   .artist-image {
-    /* width: 23rem;
-    height: 23rem; */
     width: 19rem;
     height: 19rem;
     border-radius: 50%;

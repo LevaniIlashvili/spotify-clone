@@ -191,13 +191,6 @@ const Wrapper = styled.section`
     min-width: 0;
   }
 
-  .track-artist-names div {
-    /* width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; */
-  }
-
   .artist-link-container {
     white-space: nowrap;
     overflow: hidden;

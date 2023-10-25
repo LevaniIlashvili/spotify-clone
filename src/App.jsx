@@ -31,11 +31,23 @@ const App = () => {
     if (!window.location.hash) return;
     const newAccessToken = window.location.hash.split("=")[1].split("&")[0];
     setAccessToken(newAccessToken);
+
+    const currentDate = new Date();
+    const oneHourLater = new Date(currentDate.getTime() + 60 * 60 * 1000);
+
+    localStorage.setItem("accessToken", newAccessToken);
+    localStorage.setItem("accessTokenExpirationTime", oneHourLater);
+
     window.history.replaceState({}, "http://localhost:5173/", "/");
   }, []);
 
   useEffect(() => {
-    if (!accessToken) return;
+    if (
+      !accessToken ||
+      new Date(localStorage.getItem("accessTokenExpirationTime")) < new Date()
+    )
+      return;
+
     setUser();
     setUserPlaylists();
     setUserLikedSongs();
