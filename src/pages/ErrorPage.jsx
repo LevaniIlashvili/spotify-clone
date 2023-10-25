@@ -6,10 +6,7 @@ function ErrorPage() {
 
   return (
     <Wrapper>
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png"
-        alt=""
-      />
+      <img src="/spotify-icon.png" alt="spotify icon" />
       <h1>Page not found</h1>
       <p>We can’t seem to find the page you are looking for.</p>
       <button onClick={() => navigate("/")}>Home</button>
