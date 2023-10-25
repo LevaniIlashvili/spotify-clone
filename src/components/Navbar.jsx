@@ -32,13 +32,19 @@ const Navbar = () => {
       </div>
       <div className="right-side">
         {location.pathname.split("/")[1] !== "search" && (
-          <button className="btn animated-btn explore-premium-btn">
+          <a
+            href="https://www.spotify.com/ge/premium/?utm_source=app&utm_medium=desktop&utm_campaign=upgrade&ref=web_loggedin_upgrade_button"
+            className="btn animated-btn explore-premium-btn"
+          >
             Explore Premium
-          </button>
+          </a>
         )}
-        <button className="btn animated-btn install-app-btn">
+        <a
+          href="https://open.spotify.com/download"
+          className="btn animated-btn install-app-btn"
+        >
           Install App
-        </button>
+        </a>
         <div className="user-img-container">
           <img src={user.images[0].url} alt="user image" className="user-img" />
         </div>
@@ -57,6 +63,10 @@ const Wrapper = styled.nav`
   grid-row: 1 / 2;
   grid-column: 2 /3;
   height: 100%;
+
+  a {
+    text-decoration: none;
+  }
 
   .left-side {
     display: flex;
