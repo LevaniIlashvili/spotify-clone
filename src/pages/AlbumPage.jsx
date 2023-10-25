@@ -8,6 +8,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { formatTimeMixed } from "../helpers";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import Track from "../components/Track";
+import ErrorPage from "./ErrorPage";
 
 const AlbumPage = () => {
   const { id } = useParams();
@@ -45,6 +46,10 @@ const AlbumPage = () => {
 
   if (loading) {
     return <LoadingScreen />;
+  }
+
+  if (!loading && !album) {
+    return <ErrorPage />;
   }
 
   return (

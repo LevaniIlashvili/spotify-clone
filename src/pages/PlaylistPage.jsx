@@ -10,6 +10,7 @@ import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import { FiHeart } from "react-icons/fi";
 import LoadingScreen from "../components/LoadingScreen";
 import Hero from "../components/Hero";
+import ErrorPage from "./ErrorPage";
 
 const PlaylistPage = () => {
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
@@ -86,6 +87,10 @@ const PlaylistPage = () => {
 
   if (loading) {
     return <LoadingScreen></LoadingScreen>;
+  }
+
+  if (!loading && !currentPlaylist) {
+    return <ErrorPage />;
   }
 
   return (

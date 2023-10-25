@@ -7,6 +7,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import ArtistPopularTracks from "../components/ArtistPopularTracks";
 import FansAlsoLike from "../components/FansAlsoLike";
+import ErrorPage from "./ErrorPage";
 
 const ArtistPage = () => {
   const {
@@ -80,6 +81,10 @@ const ArtistPage = () => {
 
   if (loading) {
     return <LoadingScreen />;
+  }
+
+  if (!loading && !artist) {
+    return <ErrorPage />;
   }
 
   return (

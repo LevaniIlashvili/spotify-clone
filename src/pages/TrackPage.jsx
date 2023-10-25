@@ -9,6 +9,7 @@ import Hero from "../components/Hero";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import ArtistPopularTracks from "../components/ArtistPopularTracks";
 import FansAlsoLike from "../components/FansAlsoLike";
+import ErrorPage from "./ErrorPage";
 
 const TrackPage = () => {
   const { id } = useParams();
@@ -95,6 +96,10 @@ const TrackPage = () => {
 
   if (loading) {
     return <LoadingScreen />;
+  }
+
+  if (!loading && !pageTrack) {
+    return <ErrorPage />;
   }
 
   return (

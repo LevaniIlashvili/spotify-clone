@@ -12,6 +12,7 @@ import TrackPage from "./pages/TrackPage";
 import AlbumPage from "./pages/AlbumPage";
 import ArtistPage from "./pages/ArtistPage";
 import SearchPage from "./pages/SearchPage";
+import ErrorPage from "./pages/ErrorPage";
 import CreatePlaylistModal from "./components/playlistModal/CreatePlaylistModal";
 import EditPlaylistModal from "./components/playlistModal/EditPlaylistModal";
 
@@ -82,7 +83,7 @@ const App = () => {
           <Route path="/artist/:id" element={<ArtistPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search/:searchQuery" element={<SearchPage />} />
-          {/* <Route path="*" element={<Home />} /> */}
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
         <MusicPlayer />
       </Router>
