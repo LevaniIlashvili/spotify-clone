@@ -61,7 +61,6 @@ const AppProvider = ({ children }) => {
   };
 
   const setUserPlaylists = async (playlists) => {
-    console.log(playlists);
     if (playlists) {
       dispatch({ type: SET_USER_PLAYLISTS, payload: playlists });
     } else {
@@ -70,7 +69,6 @@ const AppProvider = ({ children }) => {
           "https://api.spotify.com/v1/me/playlists",
           { headers }
         );
-        console.log(data.items);
         dispatch({ type: SET_USER_PLAYLISTS, payload: data.items });
       } catch (error) {
         console.log(error);
@@ -161,9 +159,7 @@ const AppProvider = ({ children }) => {
   };
 
   const checkIfPlaylistIsFollowed = async (playlist) => {
-    console.log(playlist);
     if (!playlist) return;
-    console.log("checking if followed");
     if (state.user.id !== playlist?.owner.id) {
       try {
         const response = await axios.get(
