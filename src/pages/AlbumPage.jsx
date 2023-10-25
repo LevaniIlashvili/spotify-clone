@@ -78,7 +78,6 @@ const AlbumPage = () => {
             type="button"
             className="start-playlist-btn animated-btn"
             onClick={() => {
-              console.log(album.tracks.items);
               if (currentTrack?.playingFrom?.id !== album.id) {
                 setQueue(album.tracks.items);
                 setCurrentTrack({

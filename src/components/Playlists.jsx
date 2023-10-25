@@ -18,7 +18,7 @@ const Playlists = ({ playlists, display }) => {
               onClick={() => navigate(`/playlist/${playlist.id}`)}
               className="playlist"
             >
-              <img src={playlist.images[0].url} alt="playlist image" />
+              <img src={playlist.images[0]?.url} alt="playlist image" />
               <div>
                 <h4>{playlist.name}</h4>
                 <p>Playlist</p>

@@ -1,13 +1,15 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import ArtistContextMenu from "./contextMenus/ArtistContextMenu";
+import { useGlobalContext } from "../context";
 
 const Artists = ({ artists, display }) => {
+  const { isSidebarOpen } = useGlobalContext();
   const navigate = useNavigate();
 
   return (
-    <Wrapper className={display}>
+    <Wrapper className={display} $isSidebarOpen={isSidebarOpen}>
       {artists.map((artist, index) => {
         return (
           <ArtistContextMenu
@@ -41,6 +43,100 @@ const Artists = ({ artists, display }) => {
     </Wrapper>
   );
 };
+
+const sidebarClosedItemQueries = css`
+  @media (max-width: 2090px) {
+    &.limited .artist-10 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1889px) {
+    &.limited .artist-9 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1689px) {
+    &.limited .artist-8 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1489px) {
+    &.limited .artist-7 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1289px) {
+    &.limited .artist-6 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1089px) {
+    &.limited .artist-5 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 889px) {
+    &.limited .artist-4 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 689px) {
+    &.limited .artist-3 {
+      display: none;
+    }
+  }
+`;
+
+const sidebarOpenedItemQueries = css`
+  &.limited .artist-10 {
+    display: none;
+  }
+
+  &.limited .artist-9 {
+    display: none;
+  }
+
+  &.limited .artist-8 {
+    display: none;
+  }
+
+  @media (max-width: 2010px) {
+    &.limited .artist-7 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1725px) {
+    &.limited .artist-6 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1440px) {
+    &.limited .artist-5 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1155px) {
+    &.limited .artist-4 {
+      display: none;
+    }
+  }
+
+  @media (max-width: 925px) {
+    &.limited .artist-3 {
+      display: none;
+    }
+  }
+`;
 
 const Wrapper = styled.section`
   display: grid;
@@ -109,35 +205,8 @@ const Wrapper = styled.section`
     font-size: 1.5rem;
   }
 
-  @media (max-width: 1980px) {
-    &.limited .artist-7 {
-      display: none;
-    }
-  }
-
-  @media (max-width: 1700px) {
-    &.limited .artist-6 {
-      display: none;
-    }
-  }
-
-  @media (max-width: 1430px) {
-    &.limited .artist-5 {
-      display: none;
-    }
-  }
-
-  @media (max-width: 1160px) {
-    &.limited .artist-4 {
-      display: none;
-    }
-  }
-
-  @media (max-width: 940px) {
-    &.limited .artist-5 {
-      display: none;
-    }
-  }
+  ${({ $isSidebarOpen }) =>
+    $isSidebarOpen ? sidebarOpenedItemQueries : sidebarClosedItemQueries}
 `;
 
 export default Artists;

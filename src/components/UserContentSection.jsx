@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const UserContentSection = ({
   title,
@@ -10,7 +10,7 @@ const UserContentSection = ({
   filterFunction,
   itemRenderer,
 }) => {
-  const { accessToken, userPlaylists } = useGlobalContext();
+  const { accessToken, userPlaylists, isSidebarOpen } = useGlobalContext();
   const [showAll, setShowAll] = useState(false);
   const [data, setData] = useState(null);
 
@@ -36,7 +36,10 @@ const UserContentSection = ({
   if (!data) return null;
 
   return (
-    <Wrapper className={showAll ? "full" : "limited"}>
+    <Wrapper
+      className={showAll ? "full" : "limited"}
+      $isSidebarOpen={isSidebarOpen}
+    >
       <div className="top">
         <h2>{title}</h2>
         <button onClick={() => setShowAll(!showAll)}>
@@ -46,37 +49,74 @@ const UserContentSection = ({
       <div className="content-container">
         {data
           .filter(filterFunction)
-          .slice(0, showAll ? 20 : 7)
+          .slice(0, showAll ? 20 : 10)
           .map((item) => itemRenderer(item))}
       </div>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.section`
-  margin-bottom: 2rem;
-
-  .top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 3rem;
-    padding-right: 0.5rem;
+const sidebarClosedItemQueries = css`
+  @media (max-width: 2090px) {
+    &.limited .item-container:nth-child(10) {
+      display: none;
+    }
   }
 
-  .top button {
-    background: transparent;
-    border: none;
-    color: var(--gray);
+  @media (max-width: 1889px) {
+    &.limited .item-container:nth-child(9) {
+      display: none;
+    }
   }
 
-  .top button:hover {
-    color: var(--white);
+  @media (max-width: 1689px) {
+    &.limited .item-container:nth-child(8) {
+      display: none;
+    }
   }
 
-  .content-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    gap: 2rem;
+  @media (max-width: 1489px) {
+    &.limited .item-container:nth-child(7) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1289px) {
+    &.limited .item-container:nth-child(6) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1089px) {
+    &.limited .item-container:nth-child(5) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 889px) {
+    &.limited .item-container:nth-child(4) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 689px) {
+    &.limited .item-container:nth-child(3) {
+      display: none;
+    }
+  }
+`;
+
+const sidebarOpenedItemQueries = css`
+  &.limited .item-container:nth-child(10) {
+    display: none;
+  }
+
+  &.limited .item-container:nth-child(9) {
+    display: none;
+  }
+
+  &.limited .item-container:nth-child(8) {
+    display: none;
   }
 
   @media (max-width: 2010px) {
@@ -107,6 +147,33 @@ const Wrapper = styled.section`
     &.limited .item-container:nth-child(3) {
       display: none;
     }
+  }
+`;
+
+const Wrapper = styled.section`
+  margin-bottom: 2rem;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    padding-right: 0.5rem;
+  }
+
+  .top button {
+    background: transparent;
+    border: none;
+    color: var(--gray);
+  }
+
+  .top button:hover {
+    color: var(--white);
+  }
+
+  .content-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 2rem;
   }
 
   .item {
@@ -148,6 +215,10 @@ const Wrapper = styled.section`
     color: var(--gray);
     font-size: 1.5rem;
   }
+
+  ${({ $isSidebarOpen }) => {
+    return $isSidebarOpen ? sidebarOpenedItemQueries : sidebarClosedItemQueries;
+  }}
 `;
 
 export default UserContentSection;

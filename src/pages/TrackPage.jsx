@@ -132,7 +132,6 @@ const TrackPage = () => {
             </button>
           </div>
           {artists?.map((artist, index) => {
-            console.log(artist);
             return (
               <div
                 key={index}

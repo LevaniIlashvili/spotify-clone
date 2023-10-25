@@ -99,15 +99,6 @@ const Player = () => {
     musicThumb.current.style.right = `${barStyleWidth - offsetX}px`;
   };
 
-  // useEffect(() => {
-  //   if (repeatState === "song" && progress >= duration) {
-  //     setProgress(0);
-  //     // clearAllIntervals();
-  //     setIsTrackPlaying(true);
-  //     console.log("aioo");
-  //   }
-  // }, [progress]);
-
   const skipToNext = () => {
     if (currentTrackIndex + 1 === queue.length) {
       setCurrentTrack({ ...currentTrack, ...queue[0] });
@@ -205,7 +196,9 @@ const Player = () => {
           </div>
           <div className="thumb" ref={musicThumb}></div>
         </div>
-        <p className="track-duration">{formatTimeNumbers(duration)}</p>
+        <p className="track-duration">
+          {formatTimeNumbers(duration ? duration : 0)}
+        </p>
       </div>
     </Wrapper>
   );

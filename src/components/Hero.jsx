@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Hero = ({ img, type, name, userName, children }) => {
+const Hero = ({ img, type, name, userName, children, description }) => {
   return (
     <Wrapper>
       <div className="info">
@@ -13,6 +13,7 @@ const Hero = ({ img, type, name, userName, children }) => {
           >
             {name}
           </h1>
+          {description && <span className="description">{description}</span>}
           <div>
             <a href="#" className="user-name">
               {userName} •
@@ -52,32 +53,24 @@ const Wrapper = styled.section`
     justify-content: flex-end;
   }
 
-  .type {
+  .type,
+  .description {
     font-size: 1.35rem;
   }
 
   .name {
     font-size: 5vw;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
-  /*
-  @media screen and (max-width: 1150px) {
-    .name {
-      font-size: 7rem;
-    }
+  .description {
+    color: var(--gray);
+    margin-bottom: 1rem;
   }
-  
-  @media screen and (max-width: 1000px) {
-    .name {
-      font-size: 4rem;
-    }
-  } */
 
   .info-text div {
     display: flex;
     flex-wrap: wrap;
-    /* align-items: center; */
     gap: 0.5rem;
     font-size: 1.4rem;
   }

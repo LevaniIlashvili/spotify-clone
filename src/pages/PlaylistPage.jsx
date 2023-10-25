@@ -57,7 +57,6 @@ const PlaylistPage = () => {
 
   const checkFollow = async () => {
     const response = await checkIfPlaylistIsFollowed(currentPlaylist);
-    console.log(response);
     setIsPlaylistFollowed(response);
   };
 
@@ -103,6 +102,7 @@ const PlaylistPage = () => {
           type={currentPlaylist.type}
           name={currentPlaylist.name}
           userName={currentPlaylist.owner.display_name}
+          description={currentPlaylist.description}
         >
           <span>{` ${currentPlaylistTracks.length} songs,`}</span>
           <span className="playlist-duration">

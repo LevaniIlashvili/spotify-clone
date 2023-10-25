@@ -12,8 +12,6 @@ function TrackInfo() {
 
   const image = images?.[2]?.url;
 
-  // console.log(currentTrack);
-
   return (
     <Wrapper className="track-info">
       <img src={`${image}`} alt="" />

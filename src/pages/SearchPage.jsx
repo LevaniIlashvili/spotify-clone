@@ -18,7 +18,7 @@ const SearchPage = () => {
   const cancelToken = useRef();
 
   const getSearchResults = async (
-    url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${selectedFilter}`
+    url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${selectedFilter}&limit=40`
   ) => {
     if (cancelToken.current) {
       cancelToken.current.cancel("canceled");
@@ -47,8 +47,6 @@ const SearchPage = () => {
     }
   };
 
-  console.log(searchResults);
-
   useEffect(() => {
     if (!searchQuery) return;
 
@@ -65,7 +63,6 @@ const SearchPage = () => {
         className="container"
         onScroll={(e) => {
           const bottom = bottomEl.current.getBoundingClientRect();
-          console.log(bottom.y, e.target.offsetHeight);
           if (bottom.y < e.target.offsetHeight + 300) {
             getSearchResults(nextUrl);
           }

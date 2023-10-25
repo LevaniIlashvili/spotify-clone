@@ -52,7 +52,9 @@ const App = () => {
 
   return (
     <Wrapper
-      style={{ gridTemplateColumns: isSidebarOpen ? "3fr 7fr" : "8rem 1fr" }}
+      style={{
+        gridTemplateColumns: isSidebarOpen ? "3fr 7fr" : "8rem 1fr",
+      }}
       onContextMenu={(e) => e.preventDefault()}
     >
       <Router>

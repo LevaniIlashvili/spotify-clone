@@ -22,7 +22,7 @@ const EditPlaylistModal = () => {
 
   const editPlaylist = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `https://api.spotify.com/v1/playlists/${isEditPlaylistModalOpen.playlist.id}`,
         {
           name,
@@ -42,7 +42,6 @@ const EditPlaylistModal = () => {
       setIsEditPlaylistModalOpen({ open: false, id: null });
       setName("");
       setDescription("");
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

@@ -31,7 +31,7 @@ const TrackContextMenu = ({
 
   const removeTrackFromPlaylist = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.spotify.com/v1/playlists/${currentPlaylist?.id}/tracks`,
         {
           headers: {
@@ -47,7 +47,6 @@ const TrackContextMenu = ({
         }
       );
       getPlaylistTracks();
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +54,7 @@ const TrackContextMenu = ({
 
   const addTrackToPlaylist = async (playlistId) => {
     try {
-      const response = await axios.post(
+     await axios.post(
         `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
         {
           uris: [`spotify:track:${track.id}`],
@@ -67,13 +66,11 @@ const TrackContextMenu = ({
           },
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // console.log(user.id, currentPlaylist);
 
   if (!track) return children;
 

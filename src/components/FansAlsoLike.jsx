@@ -16,7 +16,6 @@ const FansAlsoLike = ({ artistId }) => {
       https://api.spotify.com/v1/artists/${artistId}/related-artists`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      console.log(response);
       setSimilarArtists(response.data.artists);
     } catch (error) {
       console.log(error);
@@ -39,7 +38,7 @@ const FansAlsoLike = ({ artistId }) => {
         </button>
       </div>
       <Artists
-        artists={similarArtists.slice(0, showAll ? 20 : 7)}
+        artists={similarArtists.slice(0, showAll ? 20 : 10)}
         display={showAll ? "full" : "limited"}
       />
     </Wrapper>

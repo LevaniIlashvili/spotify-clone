@@ -7,7 +7,6 @@ const Albums = ({ albums, display }) => {
   return (
     <Wrapper className={display}>
       {albums.map((album) => {
-        console.log(album);
         const year = new Date(album.release_date).getFullYear();
 
         return (

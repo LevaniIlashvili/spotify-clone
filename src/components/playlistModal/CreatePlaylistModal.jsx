@@ -29,7 +29,6 @@ const CreatePlaylistModal = () => {
       setIsCreatePlaylistModalOpen(false);
       setName("");
       setDescription("");
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

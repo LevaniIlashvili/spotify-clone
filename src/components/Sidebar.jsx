@@ -25,7 +25,6 @@ const Sidebar = () => {
   } = useGlobalContext();
 
   const location = useLocation();
-  console.log(location.pathname.split("/")[1], location.pathname.split("/")[2]);
 
   const handleClickOutside = (e) => {
     if (
@@ -61,7 +60,6 @@ const Sidebar = () => {
         <ContextMenuTrigger id="library">
           <ul className="library">
             {filteredPlaylists.map((playlist) => {
-              console.log(playlist);
               return (
                 <PlaylistContextMenu
                   key={playlist.id}
