@@ -15,9 +15,7 @@ const Hero = ({ img, type, name, userName, children, description }) => {
           </h1>
           {description && <span className="description">{description}</span>}
           <div>
-            <a href="#" className="user-name">
-              {userName} •
-            </a>
+            <p className="user-name">{userName} •</p>
             {children}
           </div>
         </div>
