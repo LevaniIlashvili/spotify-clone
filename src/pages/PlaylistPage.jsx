@@ -178,6 +178,7 @@ const PlaylistPage = () => {
                 queue={currentPlaylist.tracks.items.map((item) => item.track)}
                 addedAt={item.added_at}
                 getPlaylistTracks={getPlaylistTracks}
+                currentPlaylist={currentPlaylist}
               />
             );
           })}

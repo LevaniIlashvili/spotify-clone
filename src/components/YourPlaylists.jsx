@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
 import UserContentSection from "./UserContentSection";
-import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import PlaylistContextMenu from "./contextMenus/PlaylistContextMenu";
 
 const YourPlaylists = () => {
-  const { user, userPlaylists, setIsEditPlaylistModalOpen } =
-    useGlobalContext();
+  const { user, userPlaylists } = useGlobalContext();
   const navigate = useNavigate();
 
   return (

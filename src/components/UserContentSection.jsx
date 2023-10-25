@@ -20,7 +20,6 @@ const UserContentSection = ({
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log(`${title} - `, response);
         setData(response.data[dataKey]);
       } catch (error) {
         console.log(error);

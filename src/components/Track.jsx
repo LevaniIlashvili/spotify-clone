@@ -14,6 +14,7 @@ const Track = ({
   addedAt,
   queue,
   getPlaylistTracks,
+  currentPlaylist,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const {
@@ -36,7 +37,11 @@ const Track = ({
   } = track;
 
   return (
-    <TrackContextMenu track={track} getPlaylistTracks={getPlaylistTracks}>
+    <TrackContextMenu
+      track={track}
+      getPlaylistTracks={getPlaylistTracks}
+      currentPlaylist={currentPlaylist}
+    >
       <Wrapper
         className="track"
         onMouseEnter={() => setIsHovered(true)}

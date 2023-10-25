@@ -216,9 +216,13 @@ const AppProvider = ({ children }) => {
       const navbarPosition = navbar.getBoundingClientRect();
 
       if (navbarPosition.bottom >= playBtnPosition.top) {
-        setNavbarContent(content);
+        if (!state.navbarContent) {
+          setNavbarContent(content);
+        }
       } else {
-        setNavbarContent("");
+        if (state.navbarContent) {
+          setNavbarContent("");
+        }
       }
     }
   };

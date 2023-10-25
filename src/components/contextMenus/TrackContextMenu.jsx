@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ContextMenuTrigger,
   MenuItem,
@@ -8,9 +8,14 @@ import {
 import { useGlobalContext } from "../../context";
 import axios from "axios";
 import styled from "styled-components";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const TrackContextMenu = ({ children, track, getPlaylistTracks }) => {
+const TrackContextMenu = ({
+  children,
+  track,
+  getPlaylistTracks,
+  currentPlaylist,
+}) => {
   const {
     userPlaylists,
     user,
@@ -19,30 +24,15 @@ const TrackContextMenu = ({ children, track, getPlaylistTracks }) => {
     toggleTrackLiked,
   } = useGlobalContext();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { id } = useParams();
 
-  const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [isPlaylistSubMenuHovered, setIsPlaylistSubMenuHovered] =
     useState(false);
   const [isArtistSubMenuHovered, setIsArtistSubMenuHovered] = useState(false);
 
-  const getPlaylist = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/playlists/${id}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      setCurrentPlaylist(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const removeTrackFromPlaylist = async () => {
     try {
       const response = await axios.delete(
-        `https://api.spotify.com/v1/playlists/${currentPlaylist.id}/tracks`,
+        `https://api.spotify.com/v1/playlists/${currentPlaylist?.id}/tracks`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -62,13 +52,6 @@ const TrackContextMenu = ({ children, track, getPlaylistTracks }) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log(location.pathname.split("/"));
-    if (location.pathname.split("/")[1] === "playlist") {
-      getPlaylist();
-    }
-  }, []);
 
   const addTrackToPlaylist = async (playlistId) => {
     try {

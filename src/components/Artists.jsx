@@ -8,11 +8,15 @@ const Artists = ({ artists, display }) => {
 
   return (
     <Wrapper className={display}>
-      {artists.map((artist) => {
+      {artists.map((artist, index) => {
         return (
-          <ArtistContextMenu key={artist.id} artist={artist}>
+          <ArtistContextMenu
+            key={artist.id}
+            artist={artist}
+            className="artist-container"
+          >
             <div
-              className="artist"
+              className={`artist artist-${index + 1}`}
               onClick={() => navigate(`/artist/${artist.id}`)}
             >
               {artist.images[2]?.url ? (
@@ -106,31 +110,31 @@ const Wrapper = styled.section`
   }
 
   @media (max-width: 1980px) {
-    &.limited .artist:nth-child(7) {
+    &.limited .artist-7 {
       display: none;
     }
   }
 
   @media (max-width: 1700px) {
-    &.limited .artist:nth-child(6) {
+    &.limited .artist-6 {
       display: none;
     }
   }
 
   @media (max-width: 1430px) {
-    &.limited .artist:nth-child(5) {
+    &.limited .artist-5 {
       display: none;
     }
   }
 
   @media (max-width: 1160px) {
-    &.limited .artist:nth-child(4) {
+    &.limited .artist-4 {
       display: none;
     }
   }
 
   @media (max-width: 940px) {
-    &.limited .artist:nth-child(3) {
+    &.limited .artist-5 {
       display: none;
     }
   }
