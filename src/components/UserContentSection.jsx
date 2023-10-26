@@ -31,11 +31,11 @@ const UserContentSection = ({
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [userPlaylists]);
 
   if (!data) return null;
 
-  return (
+  return data.length ? (
     <Wrapper
       className={showAll ? "full" : "limited"}
       $isSidebarOpen={isSidebarOpen}
@@ -53,6 +53,8 @@ const UserContentSection = ({
           .map((item) => itemRenderer(item))}
       </div>
     </Wrapper>
+  ) : (
+    ""
   );
 };
 
@@ -198,6 +200,20 @@ const Wrapper = styled.section`
     border-radius: 5px;
     margin-bottom: 2rem;
     box-shadow: 0rem 0rem 4rem #161616;
+  }
+
+  .stock-image-container {
+    width: 18rem;
+    height: 18rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stock-image {
+    color: var(--gray);
+    width: 100%;
+    font-size: 10rem;
   }
 
   .item div {

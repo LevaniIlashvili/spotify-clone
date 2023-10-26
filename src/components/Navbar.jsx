@@ -3,6 +3,7 @@ import { useGlobalContext } from "../context";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
 
 const Navbar = () => {
   const { user, navbarContent, setNavbarContent } = useGlobalContext();
@@ -46,7 +47,15 @@ const Navbar = () => {
           Install App
         </a>
         <div className="user-img-container">
-          <img src={user.images[0].url} alt="user image" className="user-img" />
+          {user.images[0]?.url ? (
+            <img
+              src={user.images[0]?.url}
+              alt="user image"
+              className="user-img"
+            />
+          ) : (
+            <AiOutlineUser className="stock-image-icon" />
+          )}
         </div>
       </div>
     </Wrapper>
@@ -142,6 +151,11 @@ const Wrapper = styled.nav`
     border-radius: 50%;
     width: 2.4rem;
     height: 2.4rem;
+  }
+
+  .stock-image-icon {
+    color: var(--gray);
+    font-size: 2.5rem;
   }
 `;
 
