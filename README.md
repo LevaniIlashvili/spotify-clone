@@ -3,6 +3,8 @@
 ## Table of Contents
 
 - [About](#about)
+- [Access Limitations](#access-limitations)
+- [Test User Credentials](#test-user-credentials)
 - [Demo](#demo)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
