@@ -16,6 +16,7 @@ const SearchPage = () => {
   const [selectedFilter, setSelectedFilter] = useState("track");
   const bottomEl = useRef();
   const cancelToken = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   const getSearchResults = async (
     url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${selectedFilter}&limit=40`
@@ -38,10 +39,12 @@ const SearchPage = () => {
         ...prev,
         ...response.data[selectedFilter + "s"].items,
       ]);
+      setIsLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
         // Request was canceled, do nothing
       } else {
+        setIsLoading(false);
         console.log(error);
       }
     }
@@ -51,11 +54,26 @@ const SearchPage = () => {
     if (!searchQuery) return;
 
     setSearchResults([]);
+    setIsLoading(true);
 
     getSearchResults();
   }, [searchQuery, selectedFilter]);
 
-  if (!searchQuery) return <Wrapper></Wrapper>;
+  if (isLoading)
+    return (
+      <Wrapper className="wrapper-flex">
+        <div className="dot dot-1"></div>
+        <div className="dot dot-2"></div>
+        <div className="dot dot-3"></div>
+      </Wrapper>
+    );
+
+  if (!searchQuery || searchResults?.length === 0)
+    return (
+      <Wrapper className="wrapper-flex">
+        <h1>No search results</h1>
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
@@ -147,6 +165,45 @@ const Wrapper = styled.section`
   padding: 1rem 2rem;
   color: var(--white);
   grid-column: 2/ 3;
+
+  &.wrapper-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    .dot {
+      width: 0.8rem;
+      height: 0.8rem;
+      background-color: var(--white);
+      border-radius: 50%;
+      animation: bounce 0.4s infinite alternate;
+    }
+
+    .dot-1 {
+      animation-delay: 0.1s;
+    }
+
+    .dot-2 {
+      animation-delay: 0.2s;
+    }
+
+    .dot-3 {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-0.8rem);
+      }
+    }
+  }
 
   .container {
     width: 100%;

@@ -107,19 +107,19 @@ const sidebarOpenedItemQueries = css`
     display: none;
   }
 
-  @media (max-width: 2010px) {
+  @media (max-width: 1970px) {
     &.limited .artist-7 {
       display: none;
     }
   }
 
-  @media (max-width: 1725px) {
+  @media (max-width: 1695px) {
     &.limited .artist-6 {
       display: none;
     }
   }
 
-  @media (max-width: 1440px) {
+  @media (max-width: 1425px) {
     &.limited .artist-5 {
       display: none;
     }
@@ -131,7 +131,7 @@ const sidebarOpenedItemQueries = css`
     }
   }
 
-  @media (max-width: 925px) {
+  @media (max-width: 932px) {
     &.limited .artist-3 {
       display: none;
     }
@@ -161,8 +161,8 @@ const Wrapper = styled.section`
   }
 
   .artist-image {
-    width: 18rem;
-    height: 18rem;
+    width: 18rem !important;
+    height: 18rem !important;
     border-radius: 50%;
     margin-bottom: 2rem;
     box-shadow: 0rem 0rem 4rem #161616;
