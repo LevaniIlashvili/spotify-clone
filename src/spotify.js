@@ -4,6 +4,6 @@ const redirectUri =
   import.meta.env.VITE_REDIRECT_URI || "http://localhost:5173/";
 
 const scope =
-  "playlist-modify-public playlist-modify-private user-read-recently-played user-follow-modify user-follow-read user-read-recently-played user-library-modify user-read-private user-read-recently-played  user-top-read playlist-read-private user-library-read";
+  "playlist-modify-public playlist-modify-private user-read-recently-played user-follow-modify user-follow-read user-read-recently-played user-library-modify user-read-recently-played  user-top-read playlist-read-private user-library-read";
 
 export const loginUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token&show_dialog=true`;

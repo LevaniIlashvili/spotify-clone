@@ -13,7 +13,9 @@ const Navbar = () => {
   useEffect(() => setNavbarContent(""), [location]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      className={location.pathname.split("/")[1] === "search" && "search-open"}
+    >
       <div className="left-side">
         <button className="btn back-btn" onClick={() => window.history.back()}>
           <IoIosArrowBack />
@@ -135,6 +137,16 @@ const Wrapper = styled.nav`
   .install-app-btn {
     color: var(--white);
     background-color: var(--black);
+  }
+
+  @media (max-width: 950px) {
+    &.search-open .install-app-btn {
+      display: none;
+    }
+
+    .search-input {
+      max-width: 25rem;
+    }
   }
 
   .user-img-container {
