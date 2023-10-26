@@ -74,4 +74,4 @@ If you're interested in contributing to this project or have any suggestions for
 
 ---
 
-Thank you for taking the time to explore my Spotify Clone project. I hope you find it engaging and a testament to my skills as a React developer. If you have any questions or want to get in touch, please feel free to reach out. Happy listening! 🎶🔥
+Thank you for taking the time to explore my Spotify Clone project. I hope you find it engaging and a testament to my skills as a React developer. If you have any questions or want to get in touch, please feel free to reach out.
