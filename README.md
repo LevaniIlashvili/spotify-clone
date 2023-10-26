@@ -10,7 +10,6 @@
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## About
 
