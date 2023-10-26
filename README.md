@@ -7,7 +7,6 @@
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
-- [How to Use](#how-to-use)
 - [Contributing](#contributing)
 - [License](#license)
 
