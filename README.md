@@ -36,7 +36,7 @@ To access the project, you can use the following test user credentials:
 
 ## Demo
 
-Before diving into the code, check out a live demo of the project [https://spo-clone-levan-ilashvili.netlify.app/](#).
+Before diving into the code, check out a live demo of the project https://spo-clone-levan-ilashvili.netlify.app/
 
 ## Features
 
